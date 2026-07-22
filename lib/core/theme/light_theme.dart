@@ -12,9 +12,16 @@ final ThemeData lightTheme = ThemeData(
   colorScheme: AppColorScheme.lightColorScheme,
   scaffoldBackgroundColor: AppColorScheme.lightColorScheme.surface,
   textTheme: AppTextTheme.textTheme(AppColorScheme.lightColorScheme.onSurface),
-  elevatedButtonTheme: AppButtonTheme.elevatedButtonTheme(AppColorScheme.lightColorScheme),
+  elevatedButtonTheme: AppButtonTheme.elevatedButtonTheme(
+    AppColorScheme.lightColorScheme,
+  ),
   cardTheme: AppCardTheme.cardTheme(AppColorScheme.lightColorScheme),
-  inputDecorationTheme: AppInputTheme.inputDecorationTheme(AppColorScheme.lightColorScheme),
+  inputDecorationTheme: AppInputTheme.inputDecorationTheme(
+    AppColorScheme.lightColorScheme,
+  ),
   appBarTheme: AppAppBarTheme.appBarTheme(AppColorScheme.lightColorScheme),
-  iconButtonTheme: AppIconButtonTheme.iconButtonTheme(AppColorScheme.lightColorScheme),
+  iconButtonTheme: AppIconButtonTheme.iconButtonTheme(
+    AppColorScheme.lightColorScheme,
+  ),
+  extensions: [AppColorScheme.lightStatusColors],
 );

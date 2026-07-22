@@ -55,11 +55,11 @@ extension ActiveTablesEventPatterns on ActiveTablesEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadTables value)?  loadTables,TResult Function( _RefreshTables value)?  refreshTables,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadTables value)?  loadTables,TResult Function( RefreshTables value)?  refreshTables,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _LoadTables() when loadTables != null:
-return loadTables(_that);case _RefreshTables() when refreshTables != null:
+case LoadTables() when loadTables != null:
+return loadTables(_that);case RefreshTables() when refreshTables != null:
 return refreshTables(_that);case _:
   return orElse();
 
@@ -78,11 +78,11 @@ return refreshTables(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadTables value)  loadTables,required TResult Function( _RefreshTables value)  refreshTables,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadTables value)  loadTables,required TResult Function( RefreshTables value)  refreshTables,}){
 final _that = this;
 switch (_that) {
-case _LoadTables():
-return loadTables(_that);case _RefreshTables():
+case LoadTables():
+return loadTables(_that);case RefreshTables():
 return refreshTables(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -100,11 +100,11 @@ return refreshTables(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadTables value)?  loadTables,TResult? Function( _RefreshTables value)?  refreshTables,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadTables value)?  loadTables,TResult? Function( RefreshTables value)?  refreshTables,}){
 final _that = this;
 switch (_that) {
-case _LoadTables() when loadTables != null:
-return loadTables(_that);case _RefreshTables() when refreshTables != null:
+case LoadTables() when loadTables != null:
+return loadTables(_that);case RefreshTables() when refreshTables != null:
 return refreshTables(_that);case _:
   return null;
 
@@ -124,8 +124,8 @@ return refreshTables(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadTables,TResult Function()?  refreshTables,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _LoadTables() when loadTables != null:
-return loadTables();case _RefreshTables() when refreshTables != null:
+case LoadTables() when loadTables != null:
+return loadTables();case RefreshTables() when refreshTables != null:
 return refreshTables();case _:
   return orElse();
 
@@ -146,8 +146,8 @@ return refreshTables();case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadTables,required TResult Function()  refreshTables,}) {final _that = this;
 switch (_that) {
-case _LoadTables():
-return loadTables();case _RefreshTables():
+case LoadTables():
+return loadTables();case RefreshTables():
 return refreshTables();case _:
   throw StateError('Unexpected subclass');
 
@@ -167,8 +167,8 @@ return refreshTables();case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadTables,TResult? Function()?  refreshTables,}) {final _that = this;
 switch (_that) {
-case _LoadTables() when loadTables != null:
-return loadTables();case _RefreshTables() when refreshTables != null:
+case LoadTables() when loadTables != null:
+return loadTables();case RefreshTables() when refreshTables != null:
 return refreshTables();case _:
   return null;
 
@@ -180,8 +180,8 @@ return refreshTables();case _:
 /// @nodoc
 
 
-class _LoadTables implements ActiveTablesEvent {
-  const _LoadTables();
+class LoadTables implements ActiveTablesEvent {
+  const LoadTables();
   
 
 
@@ -191,7 +191,7 @@ class _LoadTables implements ActiveTablesEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadTables);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadTables);
 }
 
 
@@ -212,8 +212,8 @@ String toString() {
 /// @nodoc
 
 
-class _RefreshTables implements ActiveTablesEvent {
-  const _RefreshTables();
+class RefreshTables implements ActiveTablesEvent {
+  const RefreshTables();
   
 
 
@@ -223,7 +223,7 @@ class _RefreshTables implements ActiveTablesEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RefreshTables);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RefreshTables);
 }
 
 

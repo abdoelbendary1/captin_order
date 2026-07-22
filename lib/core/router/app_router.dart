@@ -1,3 +1,4 @@
+import 'package:captin_order/features/open_table/presentation/pages/open_table_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/active_tables/presentation/pages/active_tables_page.dart';
@@ -11,7 +12,10 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
   branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
     TypedStatefulShellBranch<ActiveTablesBranchData>(
       routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<ActiveTablesRoute>(path: '/active'),
+        TypedGoRoute<ActiveTablesRoute>(
+          path: '/active',
+          routes: [TypedGoRoute<OpenTableRoute>(path: 'open')],
+        ),
       ],
     ),
     TypedStatefulShellBranch<TablesBranchData>(
@@ -20,9 +24,7 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
       ],
     ),
     TypedStatefulShellBranch<ShiftBranchData>(
-      routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<ShiftRoute>(path: '/shift'),
-      ],
+      routes: <TypedRoute<RouteData>>[TypedGoRoute<ShiftRoute>(path: '/shift')],
     ),
     TypedStatefulShellBranch<HistoryBranchData>(
       routes: <TypedRoute<RouteData>>[
@@ -44,36 +46,55 @@ class AppShellRouteData extends StatefulShellRouteData {
   }
 }
 
-class ActiveTablesBranchData extends StatefulShellBranchData { const ActiveTablesBranchData(); }
-class TablesBranchData extends StatefulShellBranchData { const TablesBranchData(); }
-class ShiftBranchData extends StatefulShellBranchData { const ShiftBranchData(); }
-class HistoryBranchData extends StatefulShellBranchData { const HistoryBranchData(); }
-
-class ActiveTablesRoute extends GoRouteData {
-  const ActiveTablesRoute();
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const ActiveTablesPage();
+class ActiveTablesBranchData extends StatefulShellBranchData {
+  const ActiveTablesBranchData();
 }
 
-class TablesRoute extends GoRouteData {
+class TablesBranchData extends StatefulShellBranchData {
+  const TablesBranchData();
+}
+
+class ShiftBranchData extends StatefulShellBranchData {
+  const ShiftBranchData();
+}
+
+class HistoryBranchData extends StatefulShellBranchData {
+  const HistoryBranchData();
+}
+
+class ActiveTablesRoute extends GoRouteData with $ActiveTablesRoute {
+  const ActiveTablesRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ActiveTablesPage();
+}
+
+class TablesRoute extends GoRouteData with $TablesRoute {
   const TablesRoute();
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const Center(child: Text('All Tables'));
 }
 
-class ShiftRoute extends GoRouteData {
+class ShiftRoute extends GoRouteData with $ShiftRoute {
   const ShiftRoute();
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const Center(child: Text('Shift Overview'));
 }
 
-class HistoryRoute extends GoRouteData {
+class HistoryRoute extends GoRouteData with $HistoryRoute {
   const HistoryRoute();
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const Center(child: Text('Order History'));
+}
+
+class OpenTableRoute extends GoRouteData with $OpenTableRoute {
+  const OpenTableRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const OpenTablePage();
 }
 
 final GoRouter appRouter = GoRouter(

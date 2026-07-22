@@ -6,7 +6,7 @@ part 'table_entity.freezed.dart';
 enum TableStatus { occupied, reserved, available, dirty }
 
 @freezed
-class TableEntity with _$TableEntity {
+abstract class TableEntity with _$TableEntity {
   const factory TableEntity({
     required String id,
     required String tableNumber,

@@ -5,7 +5,7 @@ import '../constants/app_size.dart';
 class AppCardTheme {
   static CardThemeData cardTheme(ColorScheme colorScheme) {
     return CardThemeData(
-      color: colorScheme.surface,
+      color: colorScheme.onPrimaryContainer,
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(

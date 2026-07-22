@@ -5,6 +5,6 @@ part 'active_tables_event.freezed.dart';
 
 @freezed
 class ActiveTablesEvent with _$ActiveTablesEvent {
-  const factory ActiveTablesEvent.loadTables() = _LoadTables;
-  const factory ActiveTablesEvent.refreshTables() = _RefreshTables;
+  const factory ActiveTablesEvent.loadTables() = LoadTables;
+  const factory ActiveTablesEvent.refreshTables() = RefreshTables;
 }
