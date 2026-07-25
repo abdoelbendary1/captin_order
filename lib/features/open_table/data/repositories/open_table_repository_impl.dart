@@ -1,35 +1,41 @@
-import 'package:captin_order/core/constants/api_constant.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/error_handler.dart';
 import '../../../../core/error/failure.dart';
 import '../../../active_tables/domain/entities/table_entity.dart';
-import '../../domain/entities/open_table_request.dart';
-import '../datasources/open_table_remote_datasource.dart';
+import '../../domain/repositories/open_table_repository.dart';
+import '../datasources/open_table_local_datasource.dart';
 
 @LazySingleton(as: OpenTableRepository)
 class OpenTableRepositoryImpl implements OpenTableRepository {
-  final OpenTableRemoteDataSource _dataSource;
+  final OpenTableLocalDataSource _dataSource;
 
   OpenTableRepositoryImpl(this._dataSource);
 
   @override
-  Future<Either<Failure, TableEntity>> openTable(
-    OpenTableRequest request,
-  ) async {
+  Future<Either<Failure, List<TableEntity>>> getAvailableTables(TableLocation location) async {
     try {
-      if (request.tableNumber.trim().isEmpty) {
-        return left(
-          const Failure.unknownError('Table number cannot be empty.'),
-        );
-      }
-      if (request.guestCount <= 0) {
-        return left(
-          const Failure.unknownError('Guest count must be at least 1.'),
-        );
-      }
+      final tables = await _dataSource.getAvailableTables(location);
+      return right(tables);
+    } catch (e) {
+      return left(ErrorHandler.handle(e));
+    }
+  }
 
-      final table = await _dataSource.openTable(request);
+  @override
+  Future<Either<Failure, TableEntity>> openTable({
+    required String zone,
+    required String tableNumber,
+    required int guestCount,
+    required String captainName,
+  }) async {
+    try {
+      final table = await _dataSource.openTable(
+        zone: zone,
+        tableNumber: tableNumber,
+        guestCount: guestCount,
+        captainName: captainName,
+      );
       return right(table);
     } catch (e) {
       return left(ErrorHandler.handle(e));

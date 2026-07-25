@@ -55,13 +55,15 @@ extension OpenTableStatePatterns on OpenTableState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Submitting value)?  submitting,TResult Function( _Success value)?  success,TResult Function( _Failure value)?  failure,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initial value)?  initial,TResult Function( LoadingTablesState value)?  loadingTables,TResult Function( AvailableTablesLoadedState value)?  availableTablesLoaded,TResult Function( Submit value)?  submit,TResult Function( Success value)?  success,TResult Function( FailureState value)?  failure,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _Submitting() when submitting != null:
-return submitting(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+case Initial() when initial != null:
+return initial(_that);case LoadingTablesState() when loadingTables != null:
+return loadingTables(_that);case AvailableTablesLoadedState() when availableTablesLoaded != null:
+return availableTablesLoaded(_that);case Submit() when submit != null:
+return submit(_that);case Success() when success != null:
+return success(_that);case FailureState() when failure != null:
 return failure(_that);case _:
   return orElse();
 
@@ -80,13 +82,15 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Submitting value)  submitting,required TResult Function( _Success value)  success,required TResult Function( _Failure value)  failure,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initial value)  initial,required TResult Function( LoadingTablesState value)  loadingTables,required TResult Function( AvailableTablesLoadedState value)  availableTablesLoaded,required TResult Function( Submit value)  submit,required TResult Function( Success value)  success,required TResult Function( FailureState value)  failure,}){
 final _that = this;
 switch (_that) {
-case _Initial():
-return initial(_that);case _Submitting():
-return submitting(_that);case _Success():
-return success(_that);case _Failure():
+case Initial():
+return initial(_that);case LoadingTablesState():
+return loadingTables(_that);case AvailableTablesLoadedState():
+return availableTablesLoaded(_that);case Submit():
+return submit(_that);case Success():
+return success(_that);case FailureState():
 return failure(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +108,15 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Submitting value)?  submitting,TResult? Function( _Success value)?  success,TResult? Function( _Failure value)?  failure,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initial value)?  initial,TResult? Function( LoadingTablesState value)?  loadingTables,TResult? Function( AvailableTablesLoadedState value)?  availableTablesLoaded,TResult? Function( Submit value)?  submit,TResult? Function( Success value)?  success,TResult? Function( FailureState value)?  failure,}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _Submitting() when submitting != null:
-return submitting(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+case Initial() when initial != null:
+return initial(_that);case LoadingTablesState() when loadingTables != null:
+return loadingTables(_that);case AvailableTablesLoadedState() when availableTablesLoaded != null:
+return availableTablesLoaded(_that);case Submit() when submit != null:
+return submit(_that);case Success() when success != null:
+return success(_that);case FailureState() when failure != null:
 return failure(_that);case _:
   return null;
 
@@ -128,12 +134,14 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  submitting,TResult Function( TableEntity table)?  success,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loadingTables,TResult Function( List<TableEntity> availableTables)?  availableTablesLoaded,TResult Function()?  submit,TResult Function( TableEntity table)?  success,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _Submitting() when submitting != null:
-return submitting();case _Success() when success != null:
-return success(_that.table);case _Failure() when failure != null:
+case Initial() when initial != null:
+return initial();case LoadingTablesState() when loadingTables != null:
+return loadingTables();case AvailableTablesLoadedState() when availableTablesLoaded != null:
+return availableTablesLoaded(_that.availableTables);case Submit() when submit != null:
+return submit();case Success() when success != null:
+return success(_that.table);case FailureState() when failure != null:
 return failure(_that.message);case _:
   return orElse();
 
@@ -152,12 +160,14 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  submitting,required TResult Function( TableEntity table)  success,required TResult Function( String message)  failure,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loadingTables,required TResult Function( List<TableEntity> availableTables)  availableTablesLoaded,required TResult Function()  submit,required TResult Function( TableEntity table)  success,required TResult Function( String message)  failure,}) {final _that = this;
 switch (_that) {
-case _Initial():
-return initial();case _Submitting():
-return submitting();case _Success():
-return success(_that.table);case _Failure():
+case Initial():
+return initial();case LoadingTablesState():
+return loadingTables();case AvailableTablesLoadedState():
+return availableTablesLoaded(_that.availableTables);case Submit():
+return submit();case Success():
+return success(_that.table);case FailureState():
 return failure(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +185,14 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  submitting,TResult? Function( TableEntity table)?  success,TResult? Function( String message)?  failure,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loadingTables,TResult? Function( List<TableEntity> availableTables)?  availableTablesLoaded,TResult? Function()?  submit,TResult? Function( TableEntity table)?  success,TResult? Function( String message)?  failure,}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _Submitting() when submitting != null:
-return submitting();case _Success() when success != null:
-return success(_that.table);case _Failure() when failure != null:
+case Initial() when initial != null:
+return initial();case LoadingTablesState() when loadingTables != null:
+return loadingTables();case AvailableTablesLoadedState() when availableTablesLoaded != null:
+return availableTablesLoaded(_that.availableTables);case Submit() when submit != null:
+return submit();case Success() when success != null:
+return success(_that.table);case FailureState() when failure != null:
 return failure(_that.message);case _:
   return null;
 
@@ -192,8 +204,8 @@ return failure(_that.message);case _:
 /// @nodoc
 
 
-class _Initial implements OpenTableState {
-  const _Initial();
+class Initial implements OpenTableState {
+  const Initial();
   
 
 
@@ -203,7 +215,7 @@ class _Initial implements OpenTableState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initial);
 }
 
 
@@ -224,8 +236,8 @@ String toString() {
 /// @nodoc
 
 
-class _Submitting implements OpenTableState {
-  const _Submitting();
+class LoadingTablesState implements OpenTableState {
+  const LoadingTablesState();
   
 
 
@@ -235,7 +247,7 @@ class _Submitting implements OpenTableState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Submitting);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadingTablesState);
 }
 
 
@@ -244,7 +256,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'OpenTableState.submitting()';
+  return 'OpenTableState.loadingTables()';
 }
 
 
@@ -256,8 +268,112 @@ String toString() {
 /// @nodoc
 
 
-class _Success implements OpenTableState {
-  const _Success(this.table);
+class AvailableTablesLoadedState implements OpenTableState {
+  const AvailableTablesLoadedState({required final  List<TableEntity> availableTables}): _availableTables = availableTables;
+  
+
+ final  List<TableEntity> _availableTables;
+ List<TableEntity> get availableTables {
+  if (_availableTables is EqualUnmodifiableListView) return _availableTables;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_availableTables);
+}
+
+
+/// Create a copy of OpenTableState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AvailableTablesLoadedStateCopyWith<AvailableTablesLoadedState> get copyWith => _$AvailableTablesLoadedStateCopyWithImpl<AvailableTablesLoadedState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvailableTablesLoadedState&&const DeepCollectionEquality().equals(other._availableTables, _availableTables));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_availableTables));
+
+@override
+String toString() {
+  return 'OpenTableState.availableTablesLoaded(availableTables: $availableTables)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AvailableTablesLoadedStateCopyWith<$Res> implements $OpenTableStateCopyWith<$Res> {
+  factory $AvailableTablesLoadedStateCopyWith(AvailableTablesLoadedState value, $Res Function(AvailableTablesLoadedState) _then) = _$AvailableTablesLoadedStateCopyWithImpl;
+@useResult
+$Res call({
+ List<TableEntity> availableTables
+});
+
+
+
+
+}
+/// @nodoc
+class _$AvailableTablesLoadedStateCopyWithImpl<$Res>
+    implements $AvailableTablesLoadedStateCopyWith<$Res> {
+  _$AvailableTablesLoadedStateCopyWithImpl(this._self, this._then);
+
+  final AvailableTablesLoadedState _self;
+  final $Res Function(AvailableTablesLoadedState) _then;
+
+/// Create a copy of OpenTableState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? availableTables = null,}) {
+  return _then(AvailableTablesLoadedState(
+availableTables: null == availableTables ? _self._availableTables : availableTables // ignore: cast_nullable_to_non_nullable
+as List<TableEntity>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class Submit implements OpenTableState {
+  const Submit();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Submit);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'OpenTableState.submit()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class Success implements OpenTableState {
+  const Success(this.table);
   
 
  final  TableEntity table;
@@ -266,13 +382,13 @@ class _Success implements OpenTableState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$SuccessCopyWith<_Success> get copyWith => __$SuccessCopyWithImpl<_Success>(this, _$identity);
+$SuccessCopyWith<Success> get copyWith => _$SuccessCopyWithImpl<Success>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Success&&(identical(other.table, table) || other.table == table));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Success&&(identical(other.table, table) || other.table == table));
 }
 
 
@@ -288,8 +404,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$SuccessCopyWith<$Res> implements $OpenTableStateCopyWith<$Res> {
-  factory _$SuccessCopyWith(_Success value, $Res Function(_Success) _then) = __$SuccessCopyWithImpl;
+abstract mixin class $SuccessCopyWith<$Res> implements $OpenTableStateCopyWith<$Res> {
+  factory $SuccessCopyWith(Success value, $Res Function(Success) _then) = _$SuccessCopyWithImpl;
 @useResult
 $Res call({
  TableEntity table
@@ -300,17 +416,17 @@ $TableEntityCopyWith<$Res> get table;
 
 }
 /// @nodoc
-class __$SuccessCopyWithImpl<$Res>
-    implements _$SuccessCopyWith<$Res> {
-  __$SuccessCopyWithImpl(this._self, this._then);
+class _$SuccessCopyWithImpl<$Res>
+    implements $SuccessCopyWith<$Res> {
+  _$SuccessCopyWithImpl(this._self, this._then);
 
-  final _Success _self;
-  final $Res Function(_Success) _then;
+  final Success _self;
+  final $Res Function(Success) _then;
 
 /// Create a copy of OpenTableState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? table = null,}) {
-  return _then(_Success(
+  return _then(Success(
 null == table ? _self.table : table // ignore: cast_nullable_to_non_nullable
 as TableEntity,
   ));
@@ -331,8 +447,8 @@ $TableEntityCopyWith<$Res> get table {
 /// @nodoc
 
 
-class _Failure implements OpenTableState {
-  const _Failure(this.message);
+class FailureState implements OpenTableState {
+  const FailureState(this.message);
   
 
  final  String message;
@@ -341,13 +457,13 @@ class _Failure implements OpenTableState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$FailureCopyWith<_Failure> get copyWith => __$FailureCopyWithImpl<_Failure>(this, _$identity);
+$FailureStateCopyWith<FailureState> get copyWith => _$FailureStateCopyWithImpl<FailureState>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Failure&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FailureState&&(identical(other.message, message) || other.message == message));
 }
 
 
@@ -363,8 +479,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$FailureCopyWith<$Res> implements $OpenTableStateCopyWith<$Res> {
-  factory _$FailureCopyWith(_Failure value, $Res Function(_Failure) _then) = __$FailureCopyWithImpl;
+abstract mixin class $FailureStateCopyWith<$Res> implements $OpenTableStateCopyWith<$Res> {
+  factory $FailureStateCopyWith(FailureState value, $Res Function(FailureState) _then) = _$FailureStateCopyWithImpl;
 @useResult
 $Res call({
  String message
@@ -375,17 +491,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$FailureCopyWithImpl<$Res>
-    implements _$FailureCopyWith<$Res> {
-  __$FailureCopyWithImpl(this._self, this._then);
+class _$FailureStateCopyWithImpl<$Res>
+    implements $FailureStateCopyWith<$Res> {
+  _$FailureStateCopyWithImpl(this._self, this._then);
 
-  final _Failure _self;
-  final $Res Function(_Failure) _then;
+  final FailureState _self;
+  final $Res Function(FailureState) _then;
 
 /// Create a copy of OpenTableState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
-  return _then(_Failure(
+  return _then(FailureState(
 null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));

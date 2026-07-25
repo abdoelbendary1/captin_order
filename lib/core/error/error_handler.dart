@@ -17,6 +17,6 @@ class ErrorHandler {
           return const Failure.unknownError('Network error occurred.');
       }
     }
-    return const Failure.unknownError();
+    return Failure.unknownError(error?.toString() ?? 'An unexpected error occurred.');
   }
 }

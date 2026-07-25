@@ -1,120 +1,166 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/constants/app_strings.dart';
 import '../../../../core/di/injection.dart';
 import '../bloc/active_tables_bloc.dart';
 import '../bloc/active_tables_event.dart';
 import '../bloc/active_tables_state.dart';
-import '../widgets/active_tables_app_bar.dart';
-import '../widgets/active_tables_fab.dart';
-import '../widgets/active_tables_header.dart';
-import '../widgets/active_tables_loading_skeleton.dart';
-import '../widgets/table_card.dart';
+import '../widgets/custom_header.dart';
+import '../widgets/custom_search_bar.dart';
+import '../widgets/error_view.dart';
+import '../widgets/segmented_toggle_tab.dart';
+import '../widgets/shimmer_loading_view.dart';
+import '../widgets/tables_grid_view.dart';
 
 class ActiveTablesPage extends StatelessWidget {
   const ActiveTablesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<ActiveTablesBloc>(
       create: (context) =>
           getIt<ActiveTablesBloc>()..add(const ActiveTablesEvent.loadTables()),
-      child: const Scaffold(
-        appBar: ActiveTablesAppBar(),
-        floatingActionButton: ActiveTablesFab(),
-        body: ActiveTablesBody(),
-      ),
+      child: const ActiveTablesView(),
     );
   }
 }
 
-class ActiveTablesBody extends StatelessWidget {
-  const ActiveTablesBody({super.key});
+class ActiveTablesView extends StatefulWidget {
+  const ActiveTablesView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20.h),
-          const ActiveTablesHeader(),
-          SizedBox(height: 20.h),
-          const Expanded(child: ActiveTablesContent()),
-        ],
-      ),
-    );
-  }
+  State<ActiveTablesView> createState() => _ActiveTablesViewState();
 }
 
-class ActiveTablesContent extends StatelessWidget {
-  const ActiveTablesContent({super.key});
+class _ActiveTablesViewState extends State<ActiveTablesView> {
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<ActiveTablesBloc>().add(const ActiveTablesEvent.refreshTables());
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onTabSelected(int index) {
+    if (_pageController.hasClients && _pageController.page?.round() != index) {
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOutCubic,
+      );
+    }
+    context.read<ActiveTablesBloc>().add(
+          ActiveTablesEvent.selectTab(index: index),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
 
-    return BlocBuilder<ActiveTablesBloc, ActiveTablesState>(
-      builder: (context, state) {
-        return state.when(
-          initial: () => const SizedBox.shrink(),
-          loading: () => const ActiveTablesLoadingSkeleton(),
-          empty: () => Center(
-            child: Text(
-              AppStrings.noActiveTables,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
+    // Auto refresh active tables on build to capture table closures and new orders
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<ActiveTablesBloc>().add(const ActiveTablesEvent.refreshTables());
+      }
+    });
+
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // 1. Custom Header (Always visible)
+            const CustomHeader(),
+
+            // 2. Segmented Toggle Tab with fluid sliding indicator
+            BlocBuilder<ActiveTablesBloc, ActiveTablesState>(
+              buildWhen: (previous, current) =>
+                  previous.runtimeType != current.runtimeType ||
+                  (previous is SuccessState &&
+                      current is SuccessState &&
+                      previous.selectedTabIndex != current.selectedTabIndex),
+              builder: (context, state) {
+                final selectedIndex =
+                    state is SuccessState ? state.selectedTabIndex : 0;
+                return SegmentedToggleTab(
+                  selectedIndex: selectedIndex,
+                  onTabSelected: _onTabSelected,
+                );
+              },
+            ),
+
+            // 3. Search Bar (Always visible)
+            CustomSearchBar(
+              onChanged: (query) {
+                context.read<ActiveTablesBloc>().add(
+                      ActiveTablesEvent.searchTables(query: query),
+                    );
+              },
+            ),
+
+            // 4. Swipeable PageView Cards Content Area
+            Expanded(
+              child: BlocConsumer<ActiveTablesBloc, ActiveTablesState>(
+                listenWhen: (previous, current) =>
+                    previous is SuccessState &&
+                    current is SuccessState &&
+                    previous.selectedTabIndex != current.selectedTabIndex,
+                listener: (context, state) {
+                  if (state is SuccessState) {
+                    if (_pageController.hasClients &&
+                        _pageController.page?.round() != state.selectedTabIndex) {
+                      _pageController.animateToPage(
+                        state.selectedTabIndex,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOutCubic,
+                      );
+                    }
+                  }
+                },
+                builder: (context, state) {
+                  return state.map(
+                    loading: (_) => const ShimmerLoadingView(),
+                    error: (errorState) => ErrorView(
+                      message: errorState.message,
+                      onRetry: () {
+                        context.read<ActiveTablesBloc>().add(
+                              const ActiveTablesEvent.retry(),
+                            );
+                      },
+                    ),
+                    success: (successState) => PageView(
+                      controller: _pageController,
+                      physics: const BouncingScrollPhysics(),
+                      onPageChanged: (index) {
+                        context.read<ActiveTablesBloc>().add(
+                              ActiveTablesEvent.selectTab(index: index),
+                            );
+                      },
+                      children: [
+                        // Page 0: Inside Tables
+                        TablesGridView(tables: successState.insideTables),
+                        // Page 1: Outside Tables
+                        TablesGridView(tables: successState.outsideTables),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
-          ),
-          error: (message) => _ErrorView(message: message),
-          loaded: (tables) => GridView.builder(
-            itemCount: tables.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16.w,
-              mainAxisSpacing: 16.h,
-              childAspectRatio: 0.95,
-            ),
-            itemBuilder: (context, index) => TableCard(table: tables[index]),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  final String message;
-
-  const _ErrorView({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            message.isNotEmpty ? message : AppStrings.failedToLoadActiveTables,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-            ),
-          ),
-          SizedBox(height: 12.h),
-          ElevatedButton(
-            onPressed: () => context.read<ActiveTablesBloc>().add(
-              const ActiveTablesEvent.loadTables(),
-            ),
-            child: const Text(AppStrings.retry),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

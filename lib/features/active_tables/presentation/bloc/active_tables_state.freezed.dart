@@ -55,15 +55,13 @@ extension ActiveTablesStatePatterns on ActiveTablesState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Empty value)?  empty,TResult Function( _Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadingState value)?  loading,TResult Function( ErrorState value)?  error,TResult Function( SuccessState value)?  success,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _Loading() when loading != null:
-return loading(_that);case _Loaded() when loaded != null:
-return loaded(_that);case _Empty() when empty != null:
-return empty(_that);case _Error() when error != null:
-return error(_that);case _:
+case LoadingState() when loading != null:
+return loading(_that);case ErrorState() when error != null:
+return error(_that);case SuccessState() when success != null:
+return success(_that);case _:
   return orElse();
 
 }
@@ -81,15 +79,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Empty value)  empty,required TResult Function( _Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadingState value)  loading,required TResult Function( ErrorState value)  error,required TResult Function( SuccessState value)  success,}){
 final _that = this;
 switch (_that) {
-case _Initial():
-return initial(_that);case _Loading():
-return loading(_that);case _Loaded():
-return loaded(_that);case _Empty():
-return empty(_that);case _Error():
-return error(_that);case _:
+case LoadingState():
+return loading(_that);case ErrorState():
+return error(_that);case SuccessState():
+return success(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -106,15 +102,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Empty value)?  empty,TResult? Function( _Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadingState value)?  loading,TResult? Function( ErrorState value)?  error,TResult? Function( SuccessState value)?  success,}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _Loading() when loading != null:
-return loading(_that);case _Loaded() when loaded != null:
-return loaded(_that);case _Empty() when empty != null:
-return empty(_that);case _Error() when error != null:
-return error(_that);case _:
+case LoadingState() when loading != null:
+return loading(_that);case ErrorState() when error != null:
+return error(_that);case SuccessState() when success != null:
+return success(_that);case _:
   return null;
 
 }
@@ -131,14 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<TableEntity> tables)?  loaded,TResult Function()?  empty,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function( String message)?  error,TResult Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  String searchQuery)?  success,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _Loading() when loading != null:
-return loading();case _Loaded() when loaded != null:
-return loaded(_that.tables);case _Empty() when empty != null:
-return empty();case _Error() when error != null:
-return error(_that.message);case _:
+case LoadingState() when loading != null:
+return loading();case ErrorState() when error != null:
+return error(_that.message);case SuccessState() when success != null:
+return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.searchQuery);case _:
   return orElse();
 
 }
@@ -156,14 +148,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<TableEntity> tables)  loaded,required TResult Function()  empty,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function( String message)  error,required TResult Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  String searchQuery)  success,}) {final _that = this;
 switch (_that) {
-case _Initial():
-return initial();case _Loading():
-return loading();case _Loaded():
-return loaded(_that.tables);case _Empty():
-return empty();case _Error():
-return error(_that.message);case _:
+case LoadingState():
+return loading();case ErrorState():
+return error(_that.message);case SuccessState():
+return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.searchQuery);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -180,14 +170,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<TableEntity> tables)?  loaded,TResult? Function()?  empty,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function( String message)?  error,TResult? Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  String searchQuery)?  success,}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _Loading() when loading != null:
-return loading();case _Loaded() when loaded != null:
-return loaded(_that.tables);case _Empty() when empty != null:
-return empty();case _Error() when error != null:
-return error(_that.message);case _:
+case LoadingState() when loading != null:
+return loading();case ErrorState() when error != null:
+return error(_that.message);case SuccessState() when success != null:
+return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.searchQuery);case _:
   return null;
 
 }
@@ -198,8 +186,8 @@ return error(_that.message);case _:
 /// @nodoc
 
 
-class _Initial implements ActiveTablesState {
-  const _Initial();
+class LoadingState implements ActiveTablesState {
+  const LoadingState();
   
 
 
@@ -209,39 +197,7 @@ class _Initial implements ActiveTablesState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'ActiveTablesState.initial()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _Loading implements ActiveTablesState {
-  const _Loading();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadingState);
 }
 
 
@@ -262,112 +218,8 @@ String toString() {
 /// @nodoc
 
 
-class _Loaded implements ActiveTablesState {
-  const _Loaded({required final  List<TableEntity> tables}): _tables = tables;
-  
-
- final  List<TableEntity> _tables;
- List<TableEntity> get tables {
-  if (_tables is EqualUnmodifiableListView) return _tables;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_tables);
-}
-
-
-/// Create a copy of ActiveTablesState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$LoadedCopyWith<_Loaded> get copyWith => __$LoadedCopyWithImpl<_Loaded>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._tables, _tables));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_tables));
-
-@override
-String toString() {
-  return 'ActiveTablesState.loaded(tables: $tables)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$LoadedCopyWith<$Res> implements $ActiveTablesStateCopyWith<$Res> {
-  factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) = __$LoadedCopyWithImpl;
-@useResult
-$Res call({
- List<TableEntity> tables
-});
-
-
-
-
-}
-/// @nodoc
-class __$LoadedCopyWithImpl<$Res>
-    implements _$LoadedCopyWith<$Res> {
-  __$LoadedCopyWithImpl(this._self, this._then);
-
-  final _Loaded _self;
-  final $Res Function(_Loaded) _then;
-
-/// Create a copy of ActiveTablesState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? tables = null,}) {
-  return _then(_Loaded(
-tables: null == tables ? _self._tables : tables // ignore: cast_nullable_to_non_nullable
-as List<TableEntity>,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class _Empty implements ActiveTablesState {
-  const _Empty();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Empty);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'ActiveTablesState.empty()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _Error implements ActiveTablesState {
-  const _Error(this.message);
+class ErrorState implements ActiveTablesState {
+  const ErrorState({required this.message});
   
 
  final  String message;
@@ -376,13 +228,13 @@ class _Error implements ActiveTablesState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ErrorCopyWith<_Error> get copyWith => __$ErrorCopyWithImpl<_Error>(this, _$identity);
+$ErrorStateCopyWith<ErrorState> get copyWith => _$ErrorStateCopyWithImpl<ErrorState>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ErrorState&&(identical(other.message, message) || other.message == message));
 }
 
 
@@ -398,8 +250,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$ErrorCopyWith<$Res> implements $ActiveTablesStateCopyWith<$Res> {
-  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) = __$ErrorCopyWithImpl;
+abstract mixin class $ErrorStateCopyWith<$Res> implements $ActiveTablesStateCopyWith<$Res> {
+  factory $ErrorStateCopyWith(ErrorState value, $Res Function(ErrorState) _then) = _$ErrorStateCopyWithImpl;
 @useResult
 $Res call({
  String message
@@ -410,18 +262,102 @@ $Res call({
 
 }
 /// @nodoc
-class __$ErrorCopyWithImpl<$Res>
-    implements _$ErrorCopyWith<$Res> {
-  __$ErrorCopyWithImpl(this._self, this._then);
+class _$ErrorStateCopyWithImpl<$Res>
+    implements $ErrorStateCopyWith<$Res> {
+  _$ErrorStateCopyWithImpl(this._self, this._then);
 
-  final _Error _self;
-  final $Res Function(_Error) _then;
+  final ErrorState _self;
+  final $Res Function(ErrorState) _then;
 
 /// Create a copy of ActiveTablesState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
-  return _then(_Error(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+  return _then(ErrorState(
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class SuccessState implements ActiveTablesState {
+  const SuccessState({required final  List<TableEntity> insideTables, required final  List<TableEntity> outsideTables, this.selectedTabIndex = 0, this.searchQuery = ''}): _insideTables = insideTables,_outsideTables = outsideTables;
+  
+
+ final  List<TableEntity> _insideTables;
+ List<TableEntity> get insideTables {
+  if (_insideTables is EqualUnmodifiableListView) return _insideTables;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_insideTables);
+}
+
+ final  List<TableEntity> _outsideTables;
+ List<TableEntity> get outsideTables {
+  if (_outsideTables is EqualUnmodifiableListView) return _outsideTables;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_outsideTables);
+}
+
+@JsonKey() final  int selectedTabIndex;
+@JsonKey() final  String searchQuery;
+
+/// Create a copy of ActiveTablesState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SuccessStateCopyWith<SuccessState> get copyWith => _$SuccessStateCopyWithImpl<SuccessState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuccessState&&const DeepCollectionEquality().equals(other._insideTables, _insideTables)&&const DeepCollectionEquality().equals(other._outsideTables, _outsideTables)&&(identical(other.selectedTabIndex, selectedTabIndex) || other.selectedTabIndex == selectedTabIndex)&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_insideTables),const DeepCollectionEquality().hash(_outsideTables),selectedTabIndex,searchQuery);
+
+@override
+String toString() {
+  return 'ActiveTablesState.success(insideTables: $insideTables, outsideTables: $outsideTables, selectedTabIndex: $selectedTabIndex, searchQuery: $searchQuery)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SuccessStateCopyWith<$Res> implements $ActiveTablesStateCopyWith<$Res> {
+  factory $SuccessStateCopyWith(SuccessState value, $Res Function(SuccessState) _then) = _$SuccessStateCopyWithImpl;
+@useResult
+$Res call({
+ List<TableEntity> insideTables, List<TableEntity> outsideTables, int selectedTabIndex, String searchQuery
+});
+
+
+
+
+}
+/// @nodoc
+class _$SuccessStateCopyWithImpl<$Res>
+    implements $SuccessStateCopyWith<$Res> {
+  _$SuccessStateCopyWithImpl(this._self, this._then);
+
+  final SuccessState _self;
+  final $Res Function(SuccessState) _then;
+
+/// Create a copy of ActiveTablesState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? insideTables = null,Object? outsideTables = null,Object? selectedTabIndex = null,Object? searchQuery = null,}) {
+  return _then(SuccessState(
+insideTables: null == insideTables ? _self._insideTables : insideTables // ignore: cast_nullable_to_non_nullable
+as List<TableEntity>,outsideTables: null == outsideTables ? _self._outsideTables : outsideTables // ignore: cast_nullable_to_non_nullable
+as List<TableEntity>,selectedTabIndex: null == selectedTabIndex ? _self.selectedTabIndex : selectedTabIndex // ignore: cast_nullable_to_non_nullable
+as int,searchQuery: null == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

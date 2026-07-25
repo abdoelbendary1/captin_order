@@ -39,7 +39,7 @@ class _AppShimmerState extends State<AppShimmer>
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final base = widget.baseColor ?? colorScheme.outlineVariant.withOpacity(0.5);
+    final base = widget.baseColor ?? colorScheme.outlineVariant.withValues(alpha: 0.5);
     final highlight = widget.highlightColor ?? colorScheme.surface;
 
     return AnimatedBuilder(
@@ -108,7 +108,7 @@ class ShimmerBox extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: colorScheme.outlineVariant.withOpacity(0.6),
+        color: colorScheme.outlineVariant.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(borderRadius ?? 4.r),
       ),
     );

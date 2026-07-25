@@ -1,7 +1,9 @@
-import 'package:captin_order/core/constants/api_constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../domain/entities/open_table_request.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/error/failure.dart';
+import '../../../active_tables/domain/entities/table_entity.dart';
+import '../../domain/repositories/open_table_repository.dart';
 import 'open_table_event.dart';
 import 'open_table_state.dart';
 
@@ -10,22 +12,36 @@ class OpenTableBloc extends Bloc<OpenTableEvent, OpenTableState> {
   final OpenTableRepository _repository;
 
   OpenTableBloc(this._repository) : super(const OpenTableState.initial()) {
-    on<Submit>(_onSubmit);
+    on<LoadAvailableTablesEvent>(_onLoadAvailableTables);
+    on<SubmitEvent>(_onSubmit);
   }
 
-  Future<void> _onSubmit(Submit event, Emitter<OpenTableState> emit) async {
-    emit(const OpenTableState.submitting());
+  Future<void> _onLoadAvailableTables(
+    LoadAvailableTablesEvent event,
+    Emitter<OpenTableState> emit,
+  ) async {
+    emit(const OpenTableState.loadingTables());
+    final result = await _repository.getAvailableTables(event.location);
+    result.fold(
+      (failure) => emit(OpenTableState.failure(failure.displayMessage)),
+      (tables) => emit(OpenTableState.availableTablesLoaded(availableTables: tables)),
+    );
+  }
 
-    final request = OpenTableRequest(
+  Future<void> _onSubmit(
+    SubmitEvent event,
+    Emitter<OpenTableState> emit,
+  ) async {
+    emit(const OpenTableState.submit());
+    final result = await _repository.openTable(
+      zone: event.areaName,
       tableNumber: event.tableNumber,
       guestCount: event.guestCount,
-      areaName: event.areaName,
+      captainName: AppStrings.captainName,
     );
 
-    final result = await _repository.openTable(request);
-
     result.fold(
-      (failure) => emit(OpenTableState.failure(failure.toString())),
+      (failure) => emit(OpenTableState.failure(failure.displayMessage)),
       (table) => emit(OpenTableState.success(table)),
     );
   }

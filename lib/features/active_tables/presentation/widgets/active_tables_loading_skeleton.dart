@@ -28,6 +28,7 @@ class TableCardSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
@@ -40,7 +41,7 @@ class TableCardSkeleton extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: theme.shadowColor.withValues(alpha: 0.03),
             blurRadius: 6.r,
             offset: const Offset(0, 2),
           ),

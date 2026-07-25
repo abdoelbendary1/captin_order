@@ -5,13 +5,13 @@ import '../constants/app_size.dart';
 class AppCardTheme {
   static CardThemeData cardTheme(ColorScheme colorScheme) {
     return CardThemeData(
-      color: colorScheme.onPrimaryContainer,
+      color: colorScheme.surfaceContainerLowest,
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSize.radiusMd),
+        borderRadius: BorderRadius.circular(AppSize.radiusLg),
         side: BorderSide(
-          color: colorScheme.primary.withOpacity(0.1),
+          color: colorScheme.primary.withValues(alpha: 0.1),
           width: 1.w,
         ),
       ),

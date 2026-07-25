@@ -10,7 +10,7 @@ class AppButtonTheme {
         foregroundColor: colorScheme.onPrimary,
         minimumSize: Size.fromHeight(AppSize.minTouchTarget),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSize.radiusMd),
+          borderRadius: BorderRadius.circular(9999.0),
         ),
         elevation: 1,
         textStyle: TextStyle(

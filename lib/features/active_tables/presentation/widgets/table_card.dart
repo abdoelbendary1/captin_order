@@ -1,180 +1,202 @@
-import 'package:captin_order/core/theme/status_colors.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/router/app_router.dart';
 import '../../domain/entities/table_entity.dart';
 
 class TableCard extends StatelessWidget {
   final TableEntity table;
-  final VoidCallback? onTap;
 
-  const TableCard({super.key, required this.table, this.onTap});
+  const TableCard({
+    super.key,
+    required this.table,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(4.r),
-        border: Border.all(color: colorScheme.outline, width: 1.w),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 6.r,
-            offset: const Offset(0, 2),
+    final openedAt = table.openedAt ?? table.seatedAt ?? DateTime.now();
+
+    return GestureDetector(
+      onTap: () {
+        TableDetailsRoute(tableId: table.id).go(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(16.0),
+          border: Border(
+            left: BorderSide(
+              color: theme.primaryColor,
+              width: 4.5,
+            ),
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(4.r),
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16.r),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          boxShadow: [
+            BoxShadow(
+              color: theme.shadowColor.withValues(alpha: 0.05),
+              blurRadius: 8.0,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Row 1: Code/Number + Live Ticking Timer badge
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Header: Table Number & Status Chip
-                // Header: Table Number & Status Chip
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: [
-                      Text(
-                        '${AppStrings.tablePrefix} ${table.tableNumber.padLeft(2, '0')}',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          fontSize: 11.sp,
-                          color: colorScheme.onSurface,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      SizedBox(width: 6.w),
-                      _StatusChip(status: table.status),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-
-                // Middle: Current Total
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppStrings.currentTotal,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                        fontSize: 10.sp,
-                        letterSpacing: 1.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${AppStrings.currencySymbol}${table.currentTotal.toStringAsFixed(2)}',
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w800,
-                          color: colorScheme.onSurface,
-                        ),
+                      table.tableCode.isNotEmpty
+                          ? table.tableCode
+                          : '${AppStrings.tablePrefix}${table.tableNumber}',
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                   ],
                 ),
-                const Spacer(),
 
-                // Footer: Guest Count
-                Row(
-                  children: [
-                    Icon(
-                      Icons.person_outline_rounded,
-                      size: 16.r,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                    SizedBox(width: 6.w),
-                    Expanded(
-                      child: Text(
-                        '${table.guestCount} ${table.guestCount == 1 ? AppStrings.guestSingular : AppStrings.guestPlural}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 13.sp,
-                          color: colorScheme.onSurface,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
+                // Real-time Live Ticking Timer Badge (Clicks every 1s)
+                LiveSeatedTimerBadge(openedAt: openedAt),
+              ],
+            ),
+
+            // Row 2: Total Amount
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppStrings.currentTotal,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontSize: 9.5,
+                    letterSpacing: 0.8,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 2.0),
+                Text(
+                  '${table.currentTotal.toStringAsFixed(2)} ${AppStrings.currency}',
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.primaryColor,
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _StatusChip extends StatelessWidget {
-  final TableStatus status;
+class LiveSeatedTimerBadge extends StatefulWidget {
+  final DateTime openedAt;
 
-  const _StatusChip({required this.status});
+  const LiveSeatedTimerBadge({
+    super.key,
+    required this.openedAt,
+  });
+
+  @override
+  State<LiveSeatedTimerBadge> createState() => _LiveSeatedTimerBadgeState();
+}
+
+class _LiveSeatedTimerBadgeState extends State<LiveSeatedTimerBadge> {
+  Timer? _timer;
+  late Duration _elapsed;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateElapsed();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        setState(() {
+          _calculateElapsed();
+        });
+      }
+    });
+  }
+
+  void _calculateElapsed() {
+    _elapsed = DateTime.now().difference(widget.openedAt);
+    if (_elapsed.isNegative) {
+      _elapsed = Duration.zero;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant LiveSeatedTimerBadge oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.openedAt != widget.openedAt) {
+      _calculateElapsed();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  String _formatDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+
+    final mStr = minutes.toString().padLeft(2, '0');
+    final sStr = seconds.toString().padLeft(2, '0');
+
+    if (hours > 0) {
+      final hStr = hours.toString().padLeft(2, '0');
+      return '$hStr:$mStr:$sStr';
+    } else {
+      return '$mStr:$sStr';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Safely extract our custom status colors from the current theme
-    final statusColors = Theme.of(context).extension<StatusColors>()!;
-
-    Color backgroundColor;
-    Color textColor;
-    String label;
-
-    switch (status) {
-      case TableStatus.occupied:
-        backgroundColor = statusColors.occupiedBackground!;
-        textColor = statusColors.occupiedText!;
-        label = AppStrings.statusOccupied;
-        break;
-      case TableStatus.reserved:
-        backgroundColor = statusColors.reservedBackground!;
-        textColor = statusColors.reservedText!;
-        label = AppStrings.statusReserved;
-        break;
-      case TableStatus.available:
-        backgroundColor = statusColors.availableBackground!;
-        textColor = statusColors.availableText!;
-        label = AppStrings.statusAvailable;
-        break;
-      case TableStatus.dirty:
-        backgroundColor = statusColors.dirtyBackground!;
-        textColor = statusColors.dirtyText!;
-        label = AppStrings.statusDirty;
-        break;
-    }
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(4.r),
+        color: colorScheme.secondaryContainer,
+        borderRadius: BorderRadius.circular(12.0),
       ),
-      child: Text(
-        label,
-        maxLines: 1,
-        style: TextStyle(
-          fontSize: 9.sp,
-          fontWeight: FontWeight.w700,
-          color: textColor,
-          letterSpacing: 0.5,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.access_time_rounded,
+            size: 14.0,
+            color: colorScheme.onSecondaryContainer,
+          ),
+          const SizedBox(width: 4.0),
+          Text(
+            _formatDuration(_elapsed),
+            style: textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontFeatures: const [FontFeature.tabularFigures()],
+              color: colorScheme.onSecondaryContainer,
+            ),
+          ),
+        ],
       ),
     );
   }

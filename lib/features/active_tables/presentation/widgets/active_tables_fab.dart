@@ -20,7 +20,7 @@ class ActiveTablesFab extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.primary.withOpacity(0.3),
+            color: colorScheme.primary.withValues(alpha: 0.3),
             blurRadius: 10.r,
             offset: const Offset(0, 4),
           ),

@@ -14,63 +14,30 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OpenTableEvent {
 
- String get tableNumber; int get guestCount; String get areaName;
-/// Create a copy of OpenTableEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$OpenTableEventCopyWith<OpenTableEvent> get copyWith => _$OpenTableEventCopyWithImpl<OpenTableEvent>(this as OpenTableEvent, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OpenTableEvent&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.guestCount, guestCount) || other.guestCount == guestCount)&&(identical(other.areaName, areaName) || other.areaName == areaName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OpenTableEvent);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tableNumber,guestCount,areaName);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'OpenTableEvent(tableNumber: $tableNumber, guestCount: $guestCount, areaName: $areaName)';
+  return 'OpenTableEvent()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $OpenTableEventCopyWith<$Res>  {
-  factory $OpenTableEventCopyWith(OpenTableEvent value, $Res Function(OpenTableEvent) _then) = _$OpenTableEventCopyWithImpl;
-@useResult
-$Res call({
- String tableNumber, int guestCount, String areaName
-});
-
-
-
-
-}
-/// @nodoc
-class _$OpenTableEventCopyWithImpl<$Res>
-    implements $OpenTableEventCopyWith<$Res> {
-  _$OpenTableEventCopyWithImpl(this._self, this._then);
-
-  final OpenTableEvent _self;
-  final $Res Function(OpenTableEvent) _then;
-
-/// Create a copy of OpenTableEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tableNumber = null,Object? guestCount = null,Object? areaName = null,}) {
-  return _then(_self.copyWith(
-tableNumber: null == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
-as String,guestCount: null == guestCount ? _self.guestCount : guestCount // ignore: cast_nullable_to_non_nullable
-as int,areaName: null == areaName ? _self.areaName : areaName // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
+class $OpenTableEventCopyWith<$Res>  {
+$OpenTableEventCopyWith(OpenTableEvent _, $Res Function(OpenTableEvent) __);
 }
 
 
@@ -88,10 +55,11 @@ extension OpenTableEventPatterns on OpenTableEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Submit value)?  submit,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadAvailableTablesEvent value)?  loadAvailableTables,TResult Function( SubmitEvent value)?  submit,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case Submit() when submit != null:
+case LoadAvailableTablesEvent() when loadAvailableTables != null:
+return loadAvailableTables(_that);case SubmitEvent() when submit != null:
 return submit(_that);case _:
   return orElse();
 
@@ -110,10 +78,11 @@ return submit(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Submit value)  submit,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadAvailableTablesEvent value)  loadAvailableTables,required TResult Function( SubmitEvent value)  submit,}){
 final _that = this;
 switch (_that) {
-case Submit():
+case LoadAvailableTablesEvent():
+return loadAvailableTables(_that);case SubmitEvent():
 return submit(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -131,10 +100,11 @@ return submit(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Submit value)?  submit,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadAvailableTablesEvent value)?  loadAvailableTables,TResult? Function( SubmitEvent value)?  submit,}){
 final _that = this;
 switch (_that) {
-case Submit() when submit != null:
+case LoadAvailableTablesEvent() when loadAvailableTables != null:
+return loadAvailableTables(_that);case SubmitEvent() when submit != null:
 return submit(_that);case _:
   return null;
 
@@ -152,9 +122,10 @@ return submit(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String tableNumber,  int guestCount,  String areaName)?  submit,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( TableLocation location)?  loadAvailableTables,TResult Function( String tableNumber,  int guestCount,  String areaName)?  submit,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case Submit() when submit != null:
+case LoadAvailableTablesEvent() when loadAvailableTables != null:
+return loadAvailableTables(_that.location);case SubmitEvent() when submit != null:
 return submit(_that.tableNumber,_that.guestCount,_that.areaName);case _:
   return orElse();
 
@@ -173,9 +144,10 @@ return submit(_that.tableNumber,_that.guestCount,_that.areaName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String tableNumber,  int guestCount,  String areaName)  submit,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( TableLocation location)  loadAvailableTables,required TResult Function( String tableNumber,  int guestCount,  String areaName)  submit,}) {final _that = this;
 switch (_that) {
-case Submit():
+case LoadAvailableTablesEvent():
+return loadAvailableTables(_that.location);case SubmitEvent():
 return submit(_that.tableNumber,_that.guestCount,_that.areaName);case _:
   throw StateError('Unexpected subclass');
 
@@ -193,9 +165,10 @@ return submit(_that.tableNumber,_that.guestCount,_that.areaName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String tableNumber,  int guestCount,  String areaName)?  submit,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( TableLocation location)?  loadAvailableTables,TResult? Function( String tableNumber,  int guestCount,  String areaName)?  submit,}) {final _that = this;
 switch (_that) {
-case Submit() when submit != null:
+case LoadAvailableTablesEvent() when loadAvailableTables != null:
+return loadAvailableTables(_that.location);case SubmitEvent() when submit != null:
 return submit(_that.tableNumber,_that.guestCount,_that.areaName);case _:
   return null;
 
@@ -207,25 +180,91 @@ return submit(_that.tableNumber,_that.guestCount,_that.areaName);case _:
 /// @nodoc
 
 
-class Submit implements OpenTableEvent {
-  const Submit({required this.tableNumber, required this.guestCount, required this.areaName});
+class LoadAvailableTablesEvent implements OpenTableEvent {
+  const LoadAvailableTablesEvent({required this.location});
   
 
-@override final  String tableNumber;
-@override final  int guestCount;
-@override final  String areaName;
+ final  TableLocation location;
 
 /// Create a copy of OpenTableEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$SubmitCopyWith<Submit> get copyWith => _$SubmitCopyWithImpl<Submit>(this, _$identity);
+$LoadAvailableTablesEventCopyWith<LoadAvailableTablesEvent> get copyWith => _$LoadAvailableTablesEventCopyWithImpl<LoadAvailableTablesEvent>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Submit&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.guestCount, guestCount) || other.guestCount == guestCount)&&(identical(other.areaName, areaName) || other.areaName == areaName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadAvailableTablesEvent&&(identical(other.location, location) || other.location == location));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,location);
+
+@override
+String toString() {
+  return 'OpenTableEvent.loadAvailableTables(location: $location)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LoadAvailableTablesEventCopyWith<$Res> implements $OpenTableEventCopyWith<$Res> {
+  factory $LoadAvailableTablesEventCopyWith(LoadAvailableTablesEvent value, $Res Function(LoadAvailableTablesEvent) _then) = _$LoadAvailableTablesEventCopyWithImpl;
+@useResult
+$Res call({
+ TableLocation location
+});
+
+
+
+
+}
+/// @nodoc
+class _$LoadAvailableTablesEventCopyWithImpl<$Res>
+    implements $LoadAvailableTablesEventCopyWith<$Res> {
+  _$LoadAvailableTablesEventCopyWithImpl(this._self, this._then);
+
+  final LoadAvailableTablesEvent _self;
+  final $Res Function(LoadAvailableTablesEvent) _then;
+
+/// Create a copy of OpenTableEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? location = null,}) {
+  return _then(LoadAvailableTablesEvent(
+location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as TableLocation,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class SubmitEvent implements OpenTableEvent {
+  const SubmitEvent({required this.tableNumber, required this.guestCount, required this.areaName});
+  
+
+ final  String tableNumber;
+ final  int guestCount;
+ final  String areaName;
+
+/// Create a copy of OpenTableEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SubmitEventCopyWith<SubmitEvent> get copyWith => _$SubmitEventCopyWithImpl<SubmitEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubmitEvent&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.guestCount, guestCount) || other.guestCount == guestCount)&&(identical(other.areaName, areaName) || other.areaName == areaName));
 }
 
 
@@ -241,9 +280,9 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class $SubmitCopyWith<$Res> implements $OpenTableEventCopyWith<$Res> {
-  factory $SubmitCopyWith(Submit value, $Res Function(Submit) _then) = _$SubmitCopyWithImpl;
-@override @useResult
+abstract mixin class $SubmitEventCopyWith<$Res> implements $OpenTableEventCopyWith<$Res> {
+  factory $SubmitEventCopyWith(SubmitEvent value, $Res Function(SubmitEvent) _then) = _$SubmitEventCopyWithImpl;
+@useResult
 $Res call({
  String tableNumber, int guestCount, String areaName
 });
@@ -253,17 +292,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$SubmitCopyWithImpl<$Res>
-    implements $SubmitCopyWith<$Res> {
-  _$SubmitCopyWithImpl(this._self, this._then);
+class _$SubmitEventCopyWithImpl<$Res>
+    implements $SubmitEventCopyWith<$Res> {
+  _$SubmitEventCopyWithImpl(this._self, this._then);
 
-  final Submit _self;
-  final $Res Function(Submit) _then;
+  final SubmitEvent _self;
+  final $Res Function(SubmitEvent) _then;
 
 /// Create a copy of OpenTableEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tableNumber = null,Object? guestCount = null,Object? areaName = null,}) {
-  return _then(Submit(
+@pragma('vm:prefer-inline') $Res call({Object? tableNumber = null,Object? guestCount = null,Object? areaName = null,}) {
+  return _then(SubmitEvent(
 tableNumber: null == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
 as String,guestCount: null == guestCount ? _self.guestCount : guestCount // ignore: cast_nullable_to_non_nullable
 as int,areaName: null == areaName ? _self.areaName : areaName // ignore: cast_nullable_to_non_nullable

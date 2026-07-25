@@ -11,6 +11,7 @@ part of 'order_item.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$OrderItem {
 
@@ -21,6 +22,8 @@ mixin _$OrderItem {
 @pragma('vm:prefer-inline')
 $OrderItemCopyWith<OrderItem> get copyWith => _$OrderItemCopyWithImpl<OrderItem>(this as OrderItem, _$identity);
 
+  /// Serializes this OrderItem to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -28,7 +31,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.price, price) || other.price == price)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,name,price,quantity,notes);
 
@@ -207,11 +210,11 @@ return $default(_that.id,_that.name,_that.price,_that.quantity,_that.notes);case
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _OrderItem implements OrderItem {
   const _OrderItem({required this.id, required this.name, required this.price, required this.quantity, this.notes});
-  
+  factory _OrderItem.fromJson(Map<String, dynamic> json) => _$OrderItemFromJson(json);
 
 @override final  String id;
 @override final  String name;
@@ -225,14 +228,17 @@ class _OrderItem implements OrderItem {
 @pragma('vm:prefer-inline')
 _$OrderItemCopyWith<_OrderItem> get copyWith => __$OrderItemCopyWithImpl<_OrderItem>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$OrderItemToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.price, price) || other.price == price)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,name,price,quantity,notes);
 
