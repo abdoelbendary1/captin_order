@@ -55,6 +55,7 @@ class AdminMenuRemoteDataSourceImpl implements AdminMenuRemoteDataSource {
     if (item.id.isEmpty) {
       payload.remove('id');
     }
+    payload.remove('modifiers');
     final response = await _supabaseClient
         .from('menu_items')
         .insert(payload)
@@ -65,9 +66,11 @@ class AdminMenuRemoteDataSourceImpl implements AdminMenuRemoteDataSource {
 
   @override
   Future<MenuItemModel> updateMenuItem(MenuItemModel item) async {
+    final payload = item.toJson();
+    payload.remove('modifiers');
     final response = await _supabaseClient
         .from('menu_items')
-        .update(item.toJson())
+        .update(payload)
         .eq('id', item.id)
         .select()
         .single();

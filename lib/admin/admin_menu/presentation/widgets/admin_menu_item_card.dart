@@ -5,93 +5,61 @@ import '../../domain/entities/admin_menu_item_entity.dart';
 
 class AdminMenuItemCard extends StatelessWidget {
   final AdminMenuItemEntity item;
+  final VoidCallback? onTap;
 
   const AdminMenuItemCard({
     super.key,
     required this.item,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    return Card(
-      elevation: 0.5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      clipBehavior: Clip.antiAlias,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16.r),
       child: Container(
-        padding: EdgeInsets.all(12.r),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         decoration: BoxDecoration(
-          color: colorScheme.surface,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          border: Border.all(
+            color: const Color(0xFFF0EBE1),
+            width: 1.w,
+          ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    item.name,
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                    color: item.isAvailable
-                        ? colorScheme.primaryContainer
-                        : colorScheme.errorContainer,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Text(
-                    item.isAvailable ? 'Active' : 'Disabled',
-                    style: textTheme.labelSmall?.copyWith(
-                      color: item.isAvailable
-                          ? colorScheme.onPrimaryContainer
-                          : colorScheme.onErrorContainer,
-                      fontSize: 10.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 4.h),
-            if (item.description != null && item.description!.isNotEmpty)
-              Text(
-                item.description!,
-                style: textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+            Text(
+              item.name,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.sp,
+                color: const Color(0xFF2C221E),
               ),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '\$${item.price.toStringAsFixed(2)}',
-                  style: textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.primaryColor,
-                  ),
-                ),
-                Icon(
-                  Icons.edit_rounded,
-                  size: 18.r,
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ],
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 6.h),
+            Text(
+              '\$${item.price.toStringAsFixed(2)}',
+              style: textTheme.bodyMedium?.copyWith(
+                color: const Color(0xFF7C6E65),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),

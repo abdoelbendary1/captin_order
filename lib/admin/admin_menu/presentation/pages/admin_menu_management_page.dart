@@ -12,13 +12,15 @@ import '../../domain/cqrs/create_admin_menu_item_command.dart';
 import '../../domain/cqrs/get_admin_menu_categories_query.dart';
 import '../../domain/cqrs/get_admin_menu_items_query.dart';
 import '../../domain/entities/admin_menu_category_entity.dart';
+import '../../domain/entities/admin_menu_item_entity.dart';
 import '../bloc/admin_menu_bloc.dart';
 import '../bloc/admin_menu_event.dart';
 import '../bloc/admin_menu_state.dart';
 import '../widgets/add_menu_item_bottom_sheet.dart';
 import '../widgets/admin_menu_category_chips.dart';
+import '../widgets/admin_menu_error_view.dart';
+import '../widgets/admin_menu_grid.dart';
 import '../widgets/admin_menu_header.dart';
-import '../widgets/admin_menu_item_card.dart';
 
 class AdminMenuManagementPage extends StatelessWidget {
   const AdminMenuManagementPage({super.key});
@@ -57,6 +59,57 @@ class AdminMenuManagementPage extends StatelessWidget {
 class AdminMenuManagementView extends StatelessWidget {
   const AdminMenuManagementView({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9F6F0),
+      body: SafeArea(
+        child: BlocBuilder<AdminMenuBloc, AdminMenuState>(
+          builder: (context, state) {
+            return state.when(
+              initial: () => const SizedBox.shrink(),
+              loading: () => Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: theme.primaryColor,
+                  size: 48.r,
+                ),
+              ),
+              error: (failure) => AdminMenuErrorView(
+                errorMessage: failure.displayMessage,
+                onRetry: () {
+                  context.read<AdminMenuBloc>().add(
+                        const AdminMenuEvent.loadMenu(),
+                      );
+                },
+              ),
+              loaded: (categories, items, selectedCategoryId) {
+                return _AdminMenuLoadedView(
+                  categories: categories,
+                  items: items,
+                  selectedCategoryId: selectedCategoryId,
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _AdminMenuLoadedView extends StatelessWidget {
+  final List<AdminMenuCategoryEntity> categories;
+  final List<AdminMenuItemEntity> items;
+  final String? selectedCategoryId;
+
+  const _AdminMenuLoadedView({
+    required this.categories,
+    required this.items,
+    required this.selectedCategoryId,
+  });
+
   void _openAddItemBottomSheet(
     BuildContext context,
     List<AdminMenuCategoryEntity> categories,
@@ -83,129 +136,73 @@ class AdminMenuManagementView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
+    final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: colorScheme.surfaceContainerLow,
-      body: SafeArea(
-        child: BlocBuilder<AdminMenuBloc, AdminMenuState>(
-          builder: (context, state) {
-            return state.when(
-              initial: () => const SizedBox.shrink(),
-              loading: () => Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: theme.primaryColor,
-                  size: 48.r,
+    return Stack(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const AdminMenuHeader(),
+              SizedBox(height: 16.h),
+              Text(
+                'Menu Management',
+                style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24.sp,
+                  color: const Color(0xFF1E150F),
                 ),
               ),
-              error: (failure) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline_rounded,
-                      size: 48.r,
-                      color: colorScheme.error,
-                    ),
-                    SizedBox(height: 12.h),
-                    Text(
-                      failure.displayMessage,
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.error,
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<AdminMenuBloc>().add(
-                              const AdminMenuEvent.loadMenu(),
-                            );
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
+              SizedBox(height: 4.h),
+              Text(
+                'Manage your daily offerings and modifiers.',
+                style: textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF7C6E65),
+                  fontSize: 13.sp,
                 ),
               ),
-              loaded: (categories, items, selectedCategoryId) {
-                return Stack(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 0),
-                      child: Column(
-                        children: [
-                          const AdminMenuHeader(),
-                          SizedBox(height: 12.h),
-                          AdminMenuCategoryChips(
-                            categories: categories,
-                            selectedCategoryId: selectedCategoryId,
-                            onSelectCategory: (catId) {
-                              context.read<AdminMenuBloc>().add(
-                                    AdminMenuEvent.selectCategory(
-                                      categoryId: catId,
-                                    ),
-                                  );
-                            },
-                          ),
-                          SizedBox(height: 16.h),
-                          Expanded(
-                            child: items.isEmpty
-                                ? Center(
-                                    child: Text(
-                                      'No items in this category.',
-                                      style: textTheme.bodyMedium?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                      ),
-                                    ),
-                                  )
-                                : GridView.builder(
-                                    padding: EdgeInsets.only(bottom: 80.h),
-                                    physics: const BouncingScrollPhysics(),
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 12.h,
-                                      crossAxisSpacing: 12.w,
-                                      childAspectRatio: 1.35,
-                                    ),
-                                    itemCount: items.length,
-                                    itemBuilder: (context, index) {
-                                      final item = items[index];
-                                      return AdminMenuItemCard(item: item);
-                                    },
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      right: 16.w,
-                      bottom: 16.h,
-                      child: FloatingActionButton(
-                        onPressed: () => _openAddItemBottomSheet(
-                          context,
-                          categories,
+              SizedBox(height: 16.h),
+              AdminMenuCategoryChips(
+                categories: categories,
+                selectedCategoryId: selectedCategoryId,
+                onSelectCategory: (catId) {
+                  context.read<AdminMenuBloc>().add(
+                        AdminMenuEvent.selectCategory(
+                          categoryId: catId,
                         ),
-                        backgroundColor: theme.primaryColor,
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                        child: Icon(
-                          Icons.add_rounded,
-                          color: colorScheme.onPrimary,
-                          size: 28.r,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+                      );
+                },
+              ),
+              SizedBox(height: 16.h),
+              Expanded(
+                child: AdminMenuGrid(items: items),
+              ),
+            ],
+          ),
         ),
-      ),
+        Positioned(
+          right: 20.w,
+          bottom: 24.h,
+          child: FloatingActionButton(
+            onPressed: () => _openAddItemBottomSheet(
+              context,
+              categories,
+            ),
+            backgroundColor: const Color(0xFF33261D),
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Icon(
+              Icons.add_rounded,
+              color: Colors.white,
+              size: 28.r,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

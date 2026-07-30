@@ -1,7 +1,11 @@
-import 'package:captin_order/features/admin/admin_dashboard/presentation/pages/admin_dashboard_page.dart';
-import 'package:captin_order/features/admin/admin_history/presentation/pages/admin_shift_history_page.dart';
-import 'package:captin_order/features/admin/admin_system_settings/presentation/pages/admin_system_settings_page.dart';
-import 'package:captin_order/features/admin/admin_team/presentation/pages/admin_team_page.dart';
+
+import 'package:captin_order/admin/admin_dashboard/presentation/pages/admin_dashboard_page.dart';
+import 'package:captin_order/admin/admin_history/presentation/pages/admin_shift_history_page.dart';
+import 'package:captin_order/admin/admin_menu/presentation/bloc/admin_menu_bloc.dart';
+import 'package:captin_order/admin/admin_menu/presentation/bloc/admin_menu_event.dart';
+import 'package:captin_order/admin/admin_menu/presentation/pages/admin_menu_management_page.dart';
+import 'package:captin_order/admin/admin_system_settings/presentation/pages/admin_system_settings_page.dart';
+import 'package:captin_order/admin/admin_team/presentation/pages/admin_team_page.dart';
 import 'package:captin_order/features/auth/presentation/pages/login_page.dart';
 import 'package:captin_order/features/auth/presentation/pages/register_page.dart';
 import 'package:captin_order/features/checkout/presentation/pages/checkout_page.dart';
@@ -15,9 +19,6 @@ import 'package:captin_order/shared/widgets/admin_shell_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/admin/admin_menu/presentation/bloc/admin_menu_bloc.dart';
-import '../../features/admin/admin_menu/presentation/bloc/admin_menu_event.dart';
-import '../../features/admin/admin_menu/presentation/pages/admin_menu_management_page.dart';
 
 import '../../features/active_tables/presentation/pages/active_tables_page.dart';
 import '../../features/auth/data/datasources/auth_local_datasource.dart';

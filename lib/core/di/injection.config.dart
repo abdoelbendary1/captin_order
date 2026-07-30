@@ -9,51 +9,59 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:captin_order/features/admin/admin_dashboard/presentation/bloc/admin_dashboard_bloc.dart'
+import 'package:captin_order/admin/admin_dashboard/presentation/bloc/admin_dashboard_bloc.dart'
     as _i13;
-import 'package:captin_order/features/admin/admin_history/data/datasources/admin_shift_history_remote_datasource.dart'
+import 'package:captin_order/admin/admin_history/data/datasources/admin_shift_history_remote_datasource.dart'
     as _i908;
-import 'package:captin_order/features/admin/admin_history/data/repositories/admin_shift_history_repository_impl.dart'
+import 'package:captin_order/admin/admin_history/data/repositories/admin_shift_history_repository_impl.dart'
     as _i640;
-import 'package:captin_order/features/admin/admin_history/domain/repositories/admin_shift_history_repository.dart'
+import 'package:captin_order/admin/admin_history/domain/repositories/admin_shift_history_repository.dart'
     as _i486;
-import 'package:captin_order/features/admin/admin_history/presentation/bloc/admin_shift_history_bloc.dart'
+import 'package:captin_order/admin/admin_history/presentation/bloc/admin_shift_history_bloc.dart'
     as _i806;
-import 'package:captin_order/features/admin/admin_place/presentation/bloc/admin_place_bloc.dart'
+import 'package:captin_order/admin/admin_menu/data/datasources/admin_menu_remote_datasource.dart'
+    as _i407;
+import 'package:captin_order/admin/admin_menu/data/repositories/admin_menu_repository_impl.dart'
+    as _i20;
+import 'package:captin_order/admin/admin_menu/domain/cqrs/create_admin_menu_item_command.dart'
+    as _i345;
+import 'package:captin_order/admin/admin_menu/domain/cqrs/get_admin_menu_categories_query.dart'
+    as _i682;
+import 'package:captin_order/admin/admin_menu/domain/cqrs/get_admin_menu_items_query.dart'
+    as _i424;
+import 'package:captin_order/admin/admin_menu/domain/repositories/admin_menu_repository.dart'
+    as _i922;
+import 'package:captin_order/admin/admin_menu/presentation/bloc/admin_menu_bloc.dart'
+    as _i1064;
+import 'package:captin_order/admin/admin_place/presentation/bloc/admin_place_bloc.dart'
     as _i542;
-import 'package:captin_order/features/admin/admin_system_settings/presentation/bloc/admin_system_settings_bloc.dart'
+import 'package:captin_order/admin/admin_system_settings/presentation/bloc/admin_system_settings_bloc.dart'
     as _i699;
-import 'package:captin_order/features/admin/admin_team/presentation/bloc/admin_team_bloc.dart'
+import 'package:captin_order/admin/admin_team/presentation/bloc/admin_team_bloc.dart'
     as _i1062;
-import 'package:captin_order/features/admin/data/datasources/admin_dashboard_datasource.dart'
+import 'package:captin_order/admin/data/datasources/admin_dashboard_datasource.dart'
     as _i343;
-import 'package:captin_order/features/admin/data/datasources/admin_menu_datasource.dart'
-    as _i414;
-import 'package:captin_order/features/admin/data/datasources/admin_place_datasource.dart'
+import 'package:captin_order/admin/data/datasources/admin_place_datasource.dart'
     as _i775;
-import 'package:captin_order/features/admin/data/datasources/admin_system_settings_datasource.dart'
+import 'package:captin_order/admin/data/datasources/admin_system_settings_datasource.dart'
     as _i661;
-import 'package:captin_order/features/admin/data/datasources/admin_team_datasource.dart'
+import 'package:captin_order/admin/data/datasources/admin_team_datasource.dart'
     as _i294;
-import 'package:captin_order/features/admin/data/repositories/admin_dashboard_repository_impl.dart'
+import 'package:captin_order/admin/data/repositories/admin_dashboard_repository_impl.dart'
     as _i930;
-import 'package:captin_order/features/admin/data/repositories/admin_menu_repository_impl.dart'
-    as _i681;
-import 'package:captin_order/features/admin/data/repositories/admin_place_repository_impl.dart'
+import 'package:captin_order/admin/data/repositories/admin_place_repository_impl.dart'
     as _i398;
-import 'package:captin_order/features/admin/data/repositories/admin_system_settings_repository_impl.dart'
+import 'package:captin_order/admin/data/repositories/admin_system_settings_repository_impl.dart'
     as _i529;
-import 'package:captin_order/features/admin/data/repositories/admin_team_repository_impl.dart'
+import 'package:captin_order/admin/data/repositories/admin_team_repository_impl.dart'
     as _i1004;
-import 'package:captin_order/features/admin/domain/repositories/admin_dashboard_repository.dart'
+import 'package:captin_order/admin/domain/repositories/admin_dashboard_repository.dart'
     as _i732;
-import 'package:captin_order/features/admin/domain/repositories/admin_menu_repository.dart'
-    as _i496;
-import 'package:captin_order/features/admin/domain/repositories/admin_place_repository.dart'
+import 'package:captin_order/admin/domain/repositories/admin_place_repository.dart'
     as _i423;
-import 'package:captin_order/features/admin/domain/repositories/admin_system_settings_repository.dart'
+import 'package:captin_order/admin/domain/repositories/admin_system_settings_repository.dart'
     as _i1070;
-import 'package:captin_order/features/admin/domain/repositories/admin_team_repository.dart'
+import 'package:captin_order/admin/domain/repositories/admin_team_repository.dart'
     as _i31;
 import 'package:captin_order/core/data/tables_store.dart' as _i652;
 import 'package:captin_order/core/di/register_module.dart' as _i438;
@@ -69,20 +77,6 @@ import 'package:captin_order/features/active_tables/presentation/bloc/active_tab
     as _i404;
 import 'package:captin_order/features/active_tables/presentation/bloc/ticker_cubit.dart'
     as _i856;
-import 'package:captin_order/features/admin/admin_menu/data/datasources/admin_menu_remote_datasource.dart'
-    as _i276;
-import 'package:captin_order/features/admin/admin_menu/data/repositories/admin_menu_repository_impl.dart'
-    as _i551;
-import 'package:captin_order/features/admin/admin_menu/domain/cqrs/create_admin_menu_item_command.dart'
-    as _i499;
-import 'package:captin_order/features/admin/admin_menu/domain/cqrs/get_admin_menu_categories_query.dart'
-    as _i895;
-import 'package:captin_order/features/admin/admin_menu/domain/cqrs/get_admin_menu_items_query.dart'
-    as _i944;
-import 'package:captin_order/features/admin/admin_menu/domain/repositories/admin_menu_repository.dart'
-    as _i520;
-import 'package:captin_order/features/admin/admin_menu/presentation/bloc/admin_menu_bloc.dart'
-    as _i482;
 import 'package:captin_order/features/auth/data/datasources/auth_local_datasource.dart'
     as _i589;
 import 'package:captin_order/features/auth/data/datasources/auth_remote_datasource.dart'
@@ -167,9 +161,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1062.AuthRemoteDataSource>(
       () => _i1062.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
-    gh.lazySingleton<_i414.AdminMenuDataSource>(
-      () => _i414.AdminMenuDataSourceImpl(),
-    );
     gh.lazySingleton<_i732.AdminDashboardRepository>(
       () => _i930.AdminDashboardRepositoryImpl(
         gh<_i343.AdminDashboardDataSource>(),
@@ -177,12 +168,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i661.AdminSystemSettingsDataSource>(
       () => _i661.AdminSystemSettingsDataSourceImpl(),
-    );
-    gh.lazySingleton<_i276.AdminMenuRemoteDataSource>(
-      () => _i276.AdminMenuRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
-    gh.lazySingleton<_i496.AdminMenuRepository>(
-      () => _i681.AdminMenuRepositoryImpl(gh<_i414.AdminMenuDataSource>()),
     );
     gh.lazySingleton<_i599.OrderItemsDataSource>(
       () => _i599.OrderItemsDataSourceImpl(gh<_i652.TablesStore>()),
@@ -204,6 +189,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i787.OpenTableLocalDataSource>(
       () => _i787.OpenTableLocalDataSourceImpl(gh<_i652.TablesStore>()),
+    );
+    gh.lazySingleton<_i407.AdminMenuRemoteDataSource>(
+      () => _i407.AdminMenuRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i486.AdminShiftHistoryRepository>(
       () => _i640.AdminShiftHistoryRepositoryImpl(
@@ -229,10 +217,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i673.OpenTableRepository>(
       () => _i947.OpenTableRepositoryImpl(gh<_i787.OpenTableLocalDataSource>()),
-    );
-    gh.lazySingleton<_i520.AdminMenuRepository>(
-      () =>
-          _i551.AdminMenuRepositoryImpl(gh<_i276.AdminMenuRemoteDataSource>()),
     );
     gh.lazySingleton<_i27.OrderItemsRepository>(
       () => _i372.OrderItemsRepositoryImpl(gh<_i599.OrderItemsDataSource>()),
@@ -262,6 +246,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1061.CheckoutRepository>(
       () => _i1051.CheckoutRepositoryImpl(gh<_i543.CheckoutDataSource>()),
     );
+    gh.lazySingleton<_i922.AdminMenuRepository>(
+      () => _i20.AdminMenuRepositoryImpl(gh<_i407.AdminMenuRemoteDataSource>()),
+    );
     gh.factory<_i699.AdminSystemSettingsBloc>(
       () => _i699.AdminSystemSettingsBloc(
         gh<_i1070.AdminSystemSettingsRepository>(),
@@ -273,26 +260,26 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i734.OrderItemsBloc>(
       () => _i734.OrderItemsBloc(gh<_i27.OrderItemsRepository>()),
     );
-    gh.factory<_i499.CreateAdminMenuItemCommand>(
-      () => _i499.CreateAdminMenuItemCommand(gh<_i520.AdminMenuRepository>()),
-    );
-    gh.factory<_i895.GetAdminMenuCategoriesQuery>(
-      () => _i895.GetAdminMenuCategoriesQuery(gh<_i520.AdminMenuRepository>()),
-    );
-    gh.factory<_i944.GetAdminMenuItemsQuery>(
-      () => _i944.GetAdminMenuItemsQuery(gh<_i520.AdminMenuRepository>()),
-    );
     gh.factory<_i404.ActiveTablesBloc>(
       () => _i404.ActiveTablesBloc(gh<_i32.ActiveTablesRepository>()),
     );
     gh.factory<_i439.CheckoutBloc>(
       () => _i439.CheckoutBloc(gh<_i1061.CheckoutRepository>()),
     );
-    gh.factory<_i482.AdminMenuBloc>(
-      () => _i482.AdminMenuBloc(
-        gh<_i895.GetAdminMenuCategoriesQuery>(),
-        gh<_i944.GetAdminMenuItemsQuery>(),
-        gh<_i499.CreateAdminMenuItemCommand>(),
+    gh.factory<_i345.CreateAdminMenuItemCommand>(
+      () => _i345.CreateAdminMenuItemCommand(gh<_i922.AdminMenuRepository>()),
+    );
+    gh.factory<_i682.GetAdminMenuCategoriesQuery>(
+      () => _i682.GetAdminMenuCategoriesQuery(gh<_i922.AdminMenuRepository>()),
+    );
+    gh.factory<_i424.GetAdminMenuItemsQuery>(
+      () => _i424.GetAdminMenuItemsQuery(gh<_i922.AdminMenuRepository>()),
+    );
+    gh.factory<_i1064.AdminMenuBloc>(
+      () => _i1064.AdminMenuBloc(
+        gh<_i682.GetAdminMenuCategoriesQuery>(),
+        gh<_i424.GetAdminMenuItemsQuery>(),
+        gh<_i345.CreateAdminMenuItemCommand>(),
       ),
     );
     return this;

@@ -22,46 +22,84 @@ class AdminMenuCategoryChips extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return SizedBox(
-      height: 40.h,
+      height: 42.h,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length + 1,
-        separatorBuilder: (_, __) => SizedBox(width: 8.w),
+        separatorBuilder: (context, index) => SizedBox(width: 10.w),
         itemBuilder: (context, index) {
           if (index == 0) {
             final isSelected = selectedCategoryId == null || selectedCategoryId == 'all';
-            return ChoiceChip(
-              label: const Text('All Items'),
-              selected: isSelected,
-              onSelected: (_) => onSelectCategory('all'),
-              selectedColor: theme.primaryColor,
-              labelStyle: textTheme.labelMedium?.copyWith(
-                color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.r),
-              ),
+            return _CategoryChip(
+              label: 'All',
+              isSelected: isSelected,
+              onTap: () => onSelectCategory('all'),
+              textTheme: textTheme,
+              colorScheme: colorScheme,
             );
           }
 
           final category = categories[index - 1];
           final isSelected = selectedCategoryId == category.id;
 
-          return ChoiceChip(
-            label: Text(category.name),
-            selected: isSelected,
-            onSelected: (_) => onSelectCategory(category.id),
-            selectedColor: theme.primaryColor,
-            labelStyle: textTheme.labelMedium?.copyWith(
-              color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
-            ),
+          return _CategoryChip(
+            label: category.name,
+            isSelected: isSelected,
+            onTap: () => onSelectCategory(category.id),
+            textTheme: textTheme,
+            colorScheme: colorScheme,
           );
         },
+      ),
+    );
+  }
+}
+
+class _CategoryChip extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final TextTheme textTheme;
+  final ColorScheme colorScheme;
+
+  const _CategoryChip({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    required this.textTheme,
+    required this.colorScheme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final activeBg = const Color(0xFF33261D);
+    final inactiveBg = const Color(0xFFFAF7F2);
+    final inactiveBorder = const Color(0xFFE5DECE);
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20.r),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: isSelected ? activeBg : inactiveBg,
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(
+            color: isSelected ? activeBg : inactiveBorder,
+            width: 1.w,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: textTheme.labelLarge?.copyWith(
+              color: isSelected ? Colors.white : colorScheme.onSurface,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              fontSize: 14.sp,
+            ),
+          ),
+        ),
       ),
     );
   }

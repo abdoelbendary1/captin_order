@@ -12,5 +12,6 @@ abstract class AdminMenuItemEntity with _$AdminMenuItemEntity {
     required double price,
     String? imageUrl,
     required bool isAvailable,
+    @Default([]) List<String> modifiers,
   }) = _AdminMenuItemEntity;
 }

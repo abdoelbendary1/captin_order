@@ -17,6 +17,9 @@ abstract class MenuItemModel with _$MenuItemModel {
     required double price,
     @JsonKey(name: 'image_url') String? imageUrl,
     @JsonKey(name: 'is_available') required bool isAvailable,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default([])
+    List<String> modifiers,
   }) = _MenuItemModel;
 
   factory MenuItemModel.fromJson(Map<String, dynamic> json) =>
@@ -31,6 +34,7 @@ abstract class MenuItemModel with _$MenuItemModel {
       price: price,
       imageUrl: imageUrl,
       isAvailable: isAvailable,
+      modifiers: modifiers,
     );
   }
 
@@ -43,6 +47,7 @@ abstract class MenuItemModel with _$MenuItemModel {
       price: entity.price,
       imageUrl: entity.imageUrl,
       isAvailable: entity.isAvailable,
+      modifiers: entity.modifiers,
     );
   }
 }

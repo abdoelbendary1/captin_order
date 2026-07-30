@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MenuItemModel {
 
- String get id;@JsonKey(name: 'category_id') String get categoryId; String get name; String? get description; double get price;@JsonKey(name: 'image_url') String? get imageUrl;@JsonKey(name: 'is_available') bool get isAvailable;
+ String get id;@JsonKey(name: 'category_id') String get categoryId; String get name; String? get description; double get price;@JsonKey(name: 'image_url') String? get imageUrl;@JsonKey(name: 'is_available') bool get isAvailable;@JsonKey(includeFromJson: false, includeToJson: false) List<String> get modifiers;
 /// Create a copy of MenuItemModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $MenuItemModelCopyWith<MenuItemModel> get copyWith => _$MenuItemModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MenuItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MenuItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&const DeepCollectionEquality().equals(other.modifiers, modifiers));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,categoryId,name,description,price,imageUrl,isAvailable);
+int get hashCode => Object.hash(runtimeType,id,categoryId,name,description,price,imageUrl,isAvailable,const DeepCollectionEquality().hash(modifiers));
 
 @override
 String toString() {
-  return 'MenuItemModel(id: $id, categoryId: $categoryId, name: $name, description: $description, price: $price, imageUrl: $imageUrl, isAvailable: $isAvailable)';
+  return 'MenuItemModel(id: $id, categoryId: $categoryId, name: $name, description: $description, price: $price, imageUrl: $imageUrl, isAvailable: $isAvailable, modifiers: $modifiers)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $MenuItemModelCopyWith<$Res>  {
   factory $MenuItemModelCopyWith(MenuItemModel value, $Res Function(MenuItemModel) _then) = _$MenuItemModelCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'category_id') String categoryId, String name, String? description, double price,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'is_available') bool isAvailable
+ String id,@JsonKey(name: 'category_id') String categoryId, String name, String? description, double price,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'is_available') bool isAvailable,@JsonKey(includeFromJson: false, includeToJson: false) List<String> modifiers
 });
 
 
@@ -65,7 +65,7 @@ class _$MenuItemModelCopyWithImpl<$Res>
 
 /// Create a copy of MenuItemModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? categoryId = null,Object? name = null,Object? description = freezed,Object? price = null,Object? imageUrl = freezed,Object? isAvailable = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? categoryId = null,Object? name = null,Object? description = freezed,Object? price = null,Object? imageUrl = freezed,Object? isAvailable = null,Object? modifiers = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,8 @@ as String,description: freezed == description ? _self.description : description 
 as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,modifiers: null == modifiers ? _self.modifiers : modifiers // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'is_available')  bool isAvailable)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'is_available')  bool isAvailable, @JsonKey(includeFromJson: false, includeToJson: false)  List<String> modifiers)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MenuItemModel() when $default != null:
-return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.price,_that.imageUrl,_that.isAvailable);case _:
+return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.price,_that.imageUrl,_that.isAvailable,_that.modifiers);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.pri
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'is_available')  bool isAvailable)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'is_available')  bool isAvailable, @JsonKey(includeFromJson: false, includeToJson: false)  List<String> modifiers)  $default,) {final _that = this;
 switch (_that) {
 case _MenuItemModel():
-return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.price,_that.imageUrl,_that.isAvailable);case _:
+return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.price,_that.imageUrl,_that.isAvailable,_that.modifiers);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.pri
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'is_available')  bool isAvailable)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'is_available')  bool isAvailable, @JsonKey(includeFromJson: false, includeToJson: false)  List<String> modifiers)?  $default,) {final _that = this;
 switch (_that) {
 case _MenuItemModel() when $default != null:
-return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.price,_that.imageUrl,_that.isAvailable);case _:
+return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.price,_that.imageUrl,_that.isAvailable,_that.modifiers);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.id,_that.categoryId,_that.name,_that.description,_that.pri
 @JsonSerializable()
 
 class _MenuItemModel extends MenuItemModel {
-  const _MenuItemModel({required this.id, @JsonKey(name: 'category_id') required this.categoryId, required this.name, this.description, required this.price, @JsonKey(name: 'image_url') this.imageUrl, @JsonKey(name: 'is_available') required this.isAvailable}): super._();
+  const _MenuItemModel({required this.id, @JsonKey(name: 'category_id') required this.categoryId, required this.name, this.description, required this.price, @JsonKey(name: 'image_url') this.imageUrl, @JsonKey(name: 'is_available') required this.isAvailable, @JsonKey(includeFromJson: false, includeToJson: false) final  List<String> modifiers = const []}): _modifiers = modifiers,super._();
   factory _MenuItemModel.fromJson(Map<String, dynamic> json) => _$MenuItemModelFromJson(json);
 
 @override final  String id;
@@ -225,6 +226,13 @@ class _MenuItemModel extends MenuItemModel {
 @override final  double price;
 @override@JsonKey(name: 'image_url') final  String? imageUrl;
 @override@JsonKey(name: 'is_available') final  bool isAvailable;
+ final  List<String> _modifiers;
+@override@JsonKey(includeFromJson: false, includeToJson: false) List<String> get modifiers {
+  if (_modifiers is EqualUnmodifiableListView) return _modifiers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_modifiers);
+}
+
 
 /// Create a copy of MenuItemModel
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MenuItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MenuItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&const DeepCollectionEquality().equals(other._modifiers, _modifiers));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,categoryId,name,description,price,imageUrl,isAvailable);
+int get hashCode => Object.hash(runtimeType,id,categoryId,name,description,price,imageUrl,isAvailable,const DeepCollectionEquality().hash(_modifiers));
 
 @override
 String toString() {
-  return 'MenuItemModel(id: $id, categoryId: $categoryId, name: $name, description: $description, price: $price, imageUrl: $imageUrl, isAvailable: $isAvailable)';
+  return 'MenuItemModel(id: $id, categoryId: $categoryId, name: $name, description: $description, price: $price, imageUrl: $imageUrl, isAvailable: $isAvailable, modifiers: $modifiers)';
 }
 
 
@@ -259,7 +267,7 @@ abstract mixin class _$MenuItemModelCopyWith<$Res> implements $MenuItemModelCopy
   factory _$MenuItemModelCopyWith(_MenuItemModel value, $Res Function(_MenuItemModel) _then) = __$MenuItemModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'category_id') String categoryId, String name, String? description, double price,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'is_available') bool isAvailable
+ String id,@JsonKey(name: 'category_id') String categoryId, String name, String? description, double price,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'is_available') bool isAvailable,@JsonKey(includeFromJson: false, includeToJson: false) List<String> modifiers
 });
 
 
@@ -276,7 +284,7 @@ class __$MenuItemModelCopyWithImpl<$Res>
 
 /// Create a copy of MenuItemModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? categoryId = null,Object? name = null,Object? description = freezed,Object? price = null,Object? imageUrl = freezed,Object? isAvailable = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? categoryId = null,Object? name = null,Object? description = freezed,Object? price = null,Object? imageUrl = freezed,Object? isAvailable = null,Object? modifiers = null,}) {
   return _then(_MenuItemModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
@@ -285,7 +293,8 @@ as String,description: freezed == description ? _self.description : description 
 as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,modifiers: null == modifiers ? _self._modifiers : modifiers // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 

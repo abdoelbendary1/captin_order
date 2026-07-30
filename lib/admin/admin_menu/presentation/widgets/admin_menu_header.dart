@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class AdminMenuHeader extends StatelessWidget {
-  const AdminMenuHeader({super.key});
+  final VoidCallback? onMenuPressed;
+
+  const AdminMenuHeader({
+    super.key,
+    this.onMenuPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,32 +16,44 @@ class AdminMenuHeader extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        IconButton.filledTonal(
-          onPressed: () => context.pop(),
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 18.r),
-          style: IconButton.styleFrom(
-            backgroundColor: colorScheme.surfaceContainerHigh,
-            foregroundColor: colorScheme.onSurface,
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
           children: [
+            IconButton(
+              onPressed: onMenuPressed ?? () => Scaffold.of(context).openDrawer(),
+              icon: Icon(
+                Icons.menu_rounded,
+                size: 26.r,
+                color: colorScheme.onSurface,
+              ),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+            ),
+            SizedBox(width: 14.w),
             Text(
-              'Menu Setup',
+              'Cafe Admin',
               style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              'Manage categories & catalog items',
-              style: textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurfaceVariant,
+                fontSize: 22.sp,
+                color: colorScheme.onSurface,
               ),
             ),
           ],
+        ),
+        Container(
+          width: 40.r,
+          height: 40.r,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: colorScheme.primaryContainer,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Icon(
+            Icons.person_rounded,
+            color: colorScheme.onPrimaryContainer,
+            size: 24.r,
+          ),
         ),
       ],
     );
