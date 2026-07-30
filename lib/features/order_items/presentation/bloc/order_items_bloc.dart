@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../core/constants/app_strings.dart';
 import '../../../../core/error/failure.dart';
 import '../../domain/entities/menu_item_entity.dart';
 import '../../domain/entities/selected_order_item.dart';
@@ -12,7 +11,8 @@ import 'order_items_state.dart';
 class OrderItemsBloc extends Bloc<OrderItemsEvent, OrderItemsState> {
   final OrderItemsRepository _repository;
 
-  OrderItemsBloc(this._repository) : super(const OrderItemsState.loading()) {
+  OrderItemsBloc(this._repository)
+      : super(const OrderItemsState.loading()) {
     on<LoadMenuItemsEvent>(_onLoadMenuItems);
     on<SelectCategoryEvent>(_onSelectCategory);
     on<SearchItemsEvent>(_onSearchItems);
@@ -28,6 +28,7 @@ class OrderItemsBloc extends Bloc<OrderItemsEvent, OrderItemsState> {
   ) async {
     emit(const OrderItemsState.loading());
     final result = await _repository.getMenuItems();
+
     result.fold(
       (failure) => emit(OrderItemsState.error(message: failure.displayMessage)),
       (items) {
@@ -162,9 +163,13 @@ class OrderItemsBloc extends Bloc<OrderItemsEvent, OrderItemsState> {
 
       result.fold(
         (failure) {
+          emit(currentState.copyWith(isConfirming: false));
           emit(OrderItemsState.error(message: failure.displayMessage));
         },
-        (table) => emit(OrderItemsState.confirmed(table: table)),
+        (table) {
+          emit(currentState.copyWith(isConfirming: false));
+          emit(OrderItemsState.confirmed(table: table));
+        },
       );
     }
   }

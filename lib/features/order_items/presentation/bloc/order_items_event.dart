@@ -5,7 +5,7 @@ part 'order_items_event.freezed.dart';
 
 @freezed
 class OrderItemsEvent with _$OrderItemsEvent {
-  const factory OrderItemsEvent.loadMenuItems() = LoadMenuItemsEvent;
+  const factory OrderItemsEvent.loadMenuItems({String? tableNumber}) = LoadMenuItemsEvent;
   const factory OrderItemsEvent.selectCategory({required String category}) = SelectCategoryEvent;
   const factory OrderItemsEvent.searchItems({required String query}) = SearchItemsEvent;
   const factory OrderItemsEvent.incrementItem({required MenuItemEntity item}) = IncrementItemEvent;

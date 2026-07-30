@@ -62,6 +62,16 @@ class CustomHeader extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
+                tooltip: 'Take Away History',
+                icon: Icon(
+                  Icons.takeout_dining_rounded,
+                  color: colorScheme.onSurface,
+                ),
+                onPressed: () {
+                  const TakeAwayHistoryRoute().push(context);
+                },
+              ),
+              IconButton(
                 icon: Icon(Icons.notifications_none_rounded, color: colorScheme.onSurface),
                 onPressed: () {},
               ),

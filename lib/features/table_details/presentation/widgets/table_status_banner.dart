@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../active_tables/domain/entities/table_entity.dart';
 
@@ -24,20 +25,20 @@ class TableStatusBanner extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(10.0),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(10.r),
         border: Border(
           left: BorderSide(
-            color: colorScheme.error,
-            width: 3.5,
+            color: const Color(0xFFC62828),
+            width: 3.5.w,
           ),
         ),
         boxShadow: [
           BoxShadow(
             color: theme.shadowColor.withValues(alpha: 0.04),
-            blurRadius: 3.0,
+            blurRadius: 4.r,
             offset: const Offset(0, 1),
           ),
         ],
@@ -48,18 +49,19 @@ class TableStatusBanner extends StatelessWidget {
           Text(
             AppStrings.tableStatusUpper,
             style: textTheme.labelSmall?.copyWith(
-              letterSpacing: 1.2,
+              letterSpacing: 1.1,
               fontWeight: FontWeight.bold,
-              color: colorScheme.error,
-              fontSize: 10.0,
+              color: const Color(0xFFC62828),
+              fontSize: 10.sp,
             ),
           ),
-          const SizedBox(height: 4.0),
+          SizedBox(height: 4.h),
           Text(
             statusText,
             style: textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w500,
               color: colorScheme.onSurface,
+              fontSize: 13.sp,
             ),
           ),
         ],

@@ -55,14 +55,14 @@ extension ActiveTablesEventPatterns on ActiveTablesEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadTablesEvent value)?  loadTables,TResult Function( RefreshTablesEvent value)?  refreshTables,TResult Function( SelectTabEvent value)?  selectTab,TResult Function( SearchTablesEvent value)?  searchTables,TResult Function( RetryEvent value)?  retry,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadTablesEvent value)?  loadTables,TResult Function( RefreshTablesEvent value)?  refreshTables,TResult Function( SelectTabEvent value)?  selectTab,TResult Function( FilterByStatusEvent value)?  filterByStatus,TResult Function( RetryEvent value)?  retry,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case LoadTablesEvent() when loadTables != null:
 return loadTables(_that);case RefreshTablesEvent() when refreshTables != null:
 return refreshTables(_that);case SelectTabEvent() when selectTab != null:
-return selectTab(_that);case SearchTablesEvent() when searchTables != null:
-return searchTables(_that);case RetryEvent() when retry != null:
+return selectTab(_that);case FilterByStatusEvent() when filterByStatus != null:
+return filterByStatus(_that);case RetryEvent() when retry != null:
 return retry(_that);case _:
   return orElse();
 
@@ -81,14 +81,14 @@ return retry(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadTablesEvent value)  loadTables,required TResult Function( RefreshTablesEvent value)  refreshTables,required TResult Function( SelectTabEvent value)  selectTab,required TResult Function( SearchTablesEvent value)  searchTables,required TResult Function( RetryEvent value)  retry,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadTablesEvent value)  loadTables,required TResult Function( RefreshTablesEvent value)  refreshTables,required TResult Function( SelectTabEvent value)  selectTab,required TResult Function( FilterByStatusEvent value)  filterByStatus,required TResult Function( RetryEvent value)  retry,}){
 final _that = this;
 switch (_that) {
 case LoadTablesEvent():
 return loadTables(_that);case RefreshTablesEvent():
 return refreshTables(_that);case SelectTabEvent():
-return selectTab(_that);case SearchTablesEvent():
-return searchTables(_that);case RetryEvent():
+return selectTab(_that);case FilterByStatusEvent():
+return filterByStatus(_that);case RetryEvent():
 return retry(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -106,14 +106,14 @@ return retry(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadTablesEvent value)?  loadTables,TResult? Function( RefreshTablesEvent value)?  refreshTables,TResult? Function( SelectTabEvent value)?  selectTab,TResult? Function( SearchTablesEvent value)?  searchTables,TResult? Function( RetryEvent value)?  retry,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadTablesEvent value)?  loadTables,TResult? Function( RefreshTablesEvent value)?  refreshTables,TResult? Function( SelectTabEvent value)?  selectTab,TResult? Function( FilterByStatusEvent value)?  filterByStatus,TResult? Function( RetryEvent value)?  retry,}){
 final _that = this;
 switch (_that) {
 case LoadTablesEvent() when loadTables != null:
 return loadTables(_that);case RefreshTablesEvent() when refreshTables != null:
 return refreshTables(_that);case SelectTabEvent() when selectTab != null:
-return selectTab(_that);case SearchTablesEvent() when searchTables != null:
-return searchTables(_that);case RetryEvent() when retry != null:
+return selectTab(_that);case FilterByStatusEvent() when filterByStatus != null:
+return filterByStatus(_that);case RetryEvent() when retry != null:
 return retry(_that);case _:
   return null;
 
@@ -131,13 +131,13 @@ return retry(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadTables,TResult Function()?  refreshTables,TResult Function( int index)?  selectTab,TResult Function( String query)?  searchTables,TResult Function()?  retry,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadTables,TResult Function()?  refreshTables,TResult Function( int index)?  selectTab,TResult Function( TableStatusFilter filter)?  filterByStatus,TResult Function()?  retry,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadTablesEvent() when loadTables != null:
 return loadTables();case RefreshTablesEvent() when refreshTables != null:
 return refreshTables();case SelectTabEvent() when selectTab != null:
-return selectTab(_that.index);case SearchTablesEvent() when searchTables != null:
-return searchTables(_that.query);case RetryEvent() when retry != null:
+return selectTab(_that.index);case FilterByStatusEvent() when filterByStatus != null:
+return filterByStatus(_that.filter);case RetryEvent() when retry != null:
 return retry();case _:
   return orElse();
 
@@ -156,13 +156,13 @@ return retry();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadTables,required TResult Function()  refreshTables,required TResult Function( int index)  selectTab,required TResult Function( String query)  searchTables,required TResult Function()  retry,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadTables,required TResult Function()  refreshTables,required TResult Function( int index)  selectTab,required TResult Function( TableStatusFilter filter)  filterByStatus,required TResult Function()  retry,}) {final _that = this;
 switch (_that) {
 case LoadTablesEvent():
 return loadTables();case RefreshTablesEvent():
 return refreshTables();case SelectTabEvent():
-return selectTab(_that.index);case SearchTablesEvent():
-return searchTables(_that.query);case RetryEvent():
+return selectTab(_that.index);case FilterByStatusEvent():
+return filterByStatus(_that.filter);case RetryEvent():
 return retry();case _:
   throw StateError('Unexpected subclass');
 
@@ -180,13 +180,13 @@ return retry();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadTables,TResult? Function()?  refreshTables,TResult? Function( int index)?  selectTab,TResult? Function( String query)?  searchTables,TResult? Function()?  retry,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadTables,TResult? Function()?  refreshTables,TResult? Function( int index)?  selectTab,TResult? Function( TableStatusFilter filter)?  filterByStatus,TResult? Function()?  retry,}) {final _that = this;
 switch (_that) {
 case LoadTablesEvent() when loadTables != null:
 return loadTables();case RefreshTablesEvent() when refreshTables != null:
 return refreshTables();case SelectTabEvent() when selectTab != null:
-return selectTab(_that.index);case SearchTablesEvent() when searchTables != null:
-return searchTables(_that.query);case RetryEvent() when retry != null:
+return selectTab(_that.index);case FilterByStatusEvent() when filterByStatus != null:
+return filterByStatus(_that.filter);case RetryEvent() when retry != null:
 return retry();case _:
   return null;
 
@@ -328,43 +328,43 @@ as int,
 /// @nodoc
 
 
-class SearchTablesEvent implements ActiveTablesEvent {
-  const SearchTablesEvent({required this.query});
+class FilterByStatusEvent implements ActiveTablesEvent {
+  const FilterByStatusEvent({required this.filter});
   
 
- final  String query;
+ final  TableStatusFilter filter;
 
 /// Create a copy of ActiveTablesEvent
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$SearchTablesEventCopyWith<SearchTablesEvent> get copyWith => _$SearchTablesEventCopyWithImpl<SearchTablesEvent>(this, _$identity);
+$FilterByStatusEventCopyWith<FilterByStatusEvent> get copyWith => _$FilterByStatusEventCopyWithImpl<FilterByStatusEvent>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchTablesEvent&&(identical(other.query, query) || other.query == query));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FilterByStatusEvent&&(identical(other.filter, filter) || other.filter == filter));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,query);
+int get hashCode => Object.hash(runtimeType,filter);
 
 @override
 String toString() {
-  return 'ActiveTablesEvent.searchTables(query: $query)';
+  return 'ActiveTablesEvent.filterByStatus(filter: $filter)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $SearchTablesEventCopyWith<$Res> implements $ActiveTablesEventCopyWith<$Res> {
-  factory $SearchTablesEventCopyWith(SearchTablesEvent value, $Res Function(SearchTablesEvent) _then) = _$SearchTablesEventCopyWithImpl;
+abstract mixin class $FilterByStatusEventCopyWith<$Res> implements $ActiveTablesEventCopyWith<$Res> {
+  factory $FilterByStatusEventCopyWith(FilterByStatusEvent value, $Res Function(FilterByStatusEvent) _then) = _$FilterByStatusEventCopyWithImpl;
 @useResult
 $Res call({
- String query
+ TableStatusFilter filter
 });
 
 
@@ -372,19 +372,19 @@ $Res call({
 
 }
 /// @nodoc
-class _$SearchTablesEventCopyWithImpl<$Res>
-    implements $SearchTablesEventCopyWith<$Res> {
-  _$SearchTablesEventCopyWithImpl(this._self, this._then);
+class _$FilterByStatusEventCopyWithImpl<$Res>
+    implements $FilterByStatusEventCopyWith<$Res> {
+  _$FilterByStatusEventCopyWithImpl(this._self, this._then);
 
-  final SearchTablesEvent _self;
-  final $Res Function(SearchTablesEvent) _then;
+  final FilterByStatusEvent _self;
+  final $Res Function(FilterByStatusEvent) _then;
 
 /// Create a copy of ActiveTablesEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? query = null,}) {
-  return _then(SearchTablesEvent(
-query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
-as String,
+@pragma('vm:prefer-inline') $Res call({Object? filter = null,}) {
+  return _then(FilterByStatusEvent(
+filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
+as TableStatusFilter,
   ));
 }
 

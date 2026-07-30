@@ -28,7 +28,7 @@ class OrderItemsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<OrderItemsBloc>(
       create: (context) =>
-          getIt<OrderItemsBloc>()..add(const OrderItemsEvent.loadMenuItems()),
+          getIt<OrderItemsBloc>()..add(OrderItemsEvent.loadMenuItems(tableNumber: tableNumber)),
       child: OrderItemsView(
         tableNumber: tableNumber,
         areaName: areaName,
@@ -100,12 +100,8 @@ class OrderItemsView extends StatelessWidget {
               'Order updated for Table ${table.tableNumber}!',
             );
 
-            // 3. Return to parent caller (TableDetailsPage / OpenTablePage)
-            if (Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            } else {
-              TableDetailsRoute(tableId: table.id).go(context);
-            }
+            // 3. Always go to TableDetailsPage (pressing back from TableDetailsPage goes to Home)
+            TableDetailsRoute(tableId: table.id).go(context);
           },
         );
       },
@@ -180,6 +176,11 @@ class OrderItemsView extends StatelessWidget {
                             onTap: () {
                               context.read<OrderItemsBloc>().add(
                                     OrderItemsEvent.incrementItem(item: item),
+                                  );
+                            },
+                            onLongPress: () {
+                              context.read<OrderItemsBloc>().add(
+                                    OrderItemsEvent.removeItem(item: item),
                                   );
                             },
                             onDecrement: () {

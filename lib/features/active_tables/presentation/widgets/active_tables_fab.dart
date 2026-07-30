@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/router/app_router.dart';
-import '../bloc/active_tables_bloc.dart';
-import '../bloc/active_tables_event.dart';
 
 class ActiveTablesFab extends StatelessWidget {
   const ActiveTablesFab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Container(
       width: 56.r,
@@ -31,15 +30,17 @@ class ActiveTablesFab extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
           onTap: () async {
-            final result = await const OpenTableRoute().push<bool>(context);
-            if (result == true && context.mounted) {
-              context.read<ActiveTablesBloc>().add(
-                const ActiveTablesEvent.refreshTables(),
-              );
-            }
+            await OrderItemsRoute(
+              tableNumber: 'TakeAway_${DateTime.now().millisecondsSinceEpoch}',
+              areaName: AppStrings.takeAway,
+            ).push(context);
           },
           child: Center(
-            child: Icon(Icons.add, color: colorScheme.onPrimary, size: 28.r),
+            child: Icon(
+              Icons.shopping_bag_outlined,
+              color: colorScheme.onPrimary,
+              size: 26.r,
+            ),
           ),
         ),
       ),

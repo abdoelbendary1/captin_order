@@ -1,8 +1,11 @@
+import 'package:captin_order/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/di/injection.dart';
 import '../../../../core/localization/locale_cubit.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/theme_cubit.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -23,7 +26,10 @@ class SettingsPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: colorScheme.onSurface),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: colorScheme.onSurface,
+              ),
               onPressed: () {
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
@@ -91,7 +97,88 @@ class SettingsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
 
-                // 2. Language Switcher Section
+                // 2. Theme Mode Switcher Section
+                Text(
+                  AppStrings.themeSettings,
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                BlocBuilder<ThemeCubit, ThemeMode>(
+                  builder: (context, currentMode) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerLowest,
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                          color: colorScheme.outlineVariant.withValues(
+                            alpha: 0.5,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.brightness_auto_rounded),
+                            title: const Text('System Default'),
+                            trailing: currentMode == ThemeMode.system
+                                ? Icon(
+                                    Icons.check_circle_rounded,
+                                    color: theme.primaryColor,
+                                  )
+                                : null,
+                            onTap: () => context
+                                .read<ThemeCubit>()
+                                .setThemeMode(ThemeMode.system),
+                          ),
+                          Divider(
+                            height: 1.0,
+                            color: colorScheme.outlineVariant.withValues(
+                              alpha: 0.4,
+                            ),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.light_mode_rounded),
+                            title: const Text('Light Mode'),
+                            trailing: currentMode == ThemeMode.light
+                                ? Icon(
+                                    Icons.check_circle_rounded,
+                                    color: theme.primaryColor,
+                                  )
+                                : null,
+                            onTap: () => context
+                                .read<ThemeCubit>()
+                                .setThemeMode(ThemeMode.light),
+                          ),
+                          Divider(
+                            height: 1.0,
+                            color: colorScheme.outlineVariant.withValues(
+                              alpha: 0.4,
+                            ),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.dark_mode_rounded),
+                            title: const Text('Dark Mode'),
+                            trailing: currentMode == ThemeMode.dark
+                                ? Icon(
+                                    Icons.check_circle_rounded,
+                                    color: theme.primaryColor,
+                                  )
+                                : null,
+                            onTap: () => context
+                                .read<ThemeCubit>()
+                                .setThemeMode(ThemeMode.dark),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20.0),
+
+                // 3. Language Switcher Section
                 Text(
                   AppStrings.chooseLanguage,
                   style: textTheme.labelLarge?.copyWith(
@@ -113,40 +200,63 @@ class SettingsPage extends StatelessWidget {
                       // Arabic Option (Masri 🇪🇬)
                       ListTile(
                         shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(16.0),
+                          ),
                         ),
                         title: Text(
                           AppStrings.arabicMasri,
                           style: textTheme.bodyLarge?.copyWith(
-                            fontWeight: isArabic ? FontWeight.bold : FontWeight.normal,
+                            fontWeight: isArabic
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                             color: colorScheme.onSurface,
                           ),
                         ),
                         trailing: isArabic
-                            ? Icon(Icons.check_circle_rounded, color: theme.primaryColor)
+                            ? Icon(
+                                Icons.check_circle_rounded,
+                                color: theme.primaryColor,
+                              )
                             : null,
                         onTap: () {
-                          context.read<LocaleCubit>().setLocale(const Locale('ar'));
+                          context.read<LocaleCubit>().setLocale(
+                            const Locale('ar'),
+                          );
                         },
                       ),
-                      Divider(height: 1.0, color: colorScheme.outlineVariant.withValues(alpha: 0.4)),
+                      Divider(
+                        height: 1.0,
+                        color: colorScheme.outlineVariant.withValues(
+                          alpha: 0.4,
+                        ),
+                      ),
                       // English Option 🇬🇧
                       ListTile(
                         shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(16.0)),
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(16.0),
+                          ),
                         ),
                         title: Text(
                           AppStrings.english,
                           style: textTheme.bodyLarge?.copyWith(
-                            fontWeight: !isArabic ? FontWeight.bold : FontWeight.normal,
+                            fontWeight: !isArabic
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                             color: colorScheme.onSurface,
                           ),
                         ),
                         trailing: !isArabic
-                            ? Icon(Icons.check_circle_rounded, color: theme.primaryColor)
+                            ? Icon(
+                                Icons.check_circle_rounded,
+                                color: theme.primaryColor,
+                              )
                             : null,
                         onTap: () {
-                          context.read<LocaleCubit>().setLocale(const Locale('en'));
+                          context.read<LocaleCubit>().setLocale(
+                            const Locale('en'),
+                          );
                         },
                       ),
                     ],
@@ -189,6 +299,36 @@ class SettingsPage extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 32.0),
+
+                // 4. Logout Action Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 50.0,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      await getIt<AuthRepository>().logout();
+                      if (context.mounted) {
+                        const LoginRoute().go(context);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.errorContainer,
+                      foregroundColor: colorScheme.onErrorContainer,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14.0),
+                      ),
+                    ),
+                    icon: const Icon(Icons.logout_rounded),
+                    label: Text(
+                      AppStrings.logoutStation,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],

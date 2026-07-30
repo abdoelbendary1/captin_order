@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
 
 class PaymentMethodSelector extends StatelessWidget {
@@ -18,10 +19,10 @@ class PaymentMethodSelector extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(16.0),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,9 +32,10 @@ class PaymentMethodSelector extends StatelessWidget {
             style: textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSurface,
+              fontSize: 16.sp,
             ),
           ),
-          const SizedBox(height: 14.0),
+          SizedBox(height: 14.h),
 
           // 1. Card Option
           _buildPaymentTile(
@@ -43,7 +45,7 @@ class PaymentMethodSelector extends StatelessWidget {
             icon: Icons.credit_card_rounded,
             value: AppStrings.cardMethod,
           ),
-          const SizedBox(height: 10.0),
+          SizedBox(height: 10.h),
 
           // 2. Cash Option
           _buildPaymentTile(
@@ -53,7 +55,7 @@ class PaymentMethodSelector extends StatelessWidget {
             icon: Icons.payments_outlined,
             value: AppStrings.cashMethod,
           ),
-          const SizedBox(height: 10.0),
+          SizedBox(height: 10.h),
 
           // 3. Digital Wallet Option
           _buildPaymentTile(
@@ -85,38 +87,48 @@ class PaymentMethodSelector extends StatelessWidget {
       onTap: () => onMethodSelected(value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(14.0),
+        padding: EdgeInsets.all(14.r),
         decoration: BoxDecoration(
           color: isSelected
-              ? colorScheme.surfaceContainerLow
-              : colorScheme.surfaceContainerLowest,
-          borderRadius: BorderRadius.circular(12.0),
+              ? theme.primaryColor
+              : colorScheme.surface,
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
             color: isSelected
-                ? colorScheme.onSurface
-                : colorScheme.outlineVariant.withValues(alpha: 0.5),
+                ? theme.primaryColor
+                : colorScheme.outlineVariant.withValues(alpha: 0.4),
             width: isSelected ? 2.0 : 1.0,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: theme.primaryColor.withValues(alpha: 0.2),
+                    blurRadius: 6.r,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           children: [
+            // Icon Container
             Container(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.r),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? colorScheme.primaryContainer
-                    : colorScheme.surfaceContainerHigh,
-                borderRadius: BorderRadius.circular(10.0),
+                    ? colorScheme.onPrimary.withValues(alpha: 0.15)
+                    : colorScheme.surfaceContainerHigh.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Icon(
                 icon,
                 color: isSelected
-                    ? colorScheme.onPrimaryContainer
+                    ? colorScheme.onPrimary
                     : colorScheme.onSurfaceVariant,
-                size: 22.0,
+                size: 22.r,
               ),
             ),
-            const SizedBox(width: 12.0),
+            SizedBox(width: 12.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,29 +137,36 @@ class PaymentMethodSelector extends StatelessWidget {
                     title,
                     style: textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
+                      color: isSelected
+                          ? colorScheme.onPrimary
+                          : colorScheme.onSurface,
+                      fontSize: 14.sp,
                     ),
                   ),
-                  const SizedBox(height: 2.0),
+                  SizedBox(height: 2.h),
                   Text(
                     subtitle,
                     style: textTheme.labelSmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      fontSize: 10.5,
+                      fontFamily: 'JetBrains Mono',
+                      color: isSelected
+                          ? colorScheme.onPrimary.withValues(alpha: 0.8)
+                          : colorScheme.onSurfaceVariant,
+                      fontSize: 10.5.sp,
                     ),
                   ),
                 ],
               ),
             ),
 
-            // Radio Button Indicator
+            // Inverted Radio Button Indicator
             Container(
-              width: 20.0,
-              height: 20.0,
+              width: 20.r,
+              height: 20.r,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                color: isSelected ? colorScheme.onPrimary : Colors.transparent,
                 border: Border.all(
-                  color: isSelected ? colorScheme.onSurface : colorScheme.outlineVariant,
+                  color: isSelected ? colorScheme.onPrimary : colorScheme.outlineVariant,
                   width: isSelected ? 6.0 : 1.5,
                 ),
               ),

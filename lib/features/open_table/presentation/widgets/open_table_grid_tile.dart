@@ -31,10 +31,7 @@ class OpenTableGridTile extends StatelessWidget {
           border: isSelected
               ? null
               : Border(
-                  left: BorderSide(
-                    color: colorScheme.outline,
-                    width: 4.w,
-                  ),
+                  left: BorderSide(color: colorScheme.outline, width: 4.w),
                 ),
         ),
         child: Stack(

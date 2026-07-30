@@ -6,6 +6,7 @@ class OrderItemCard extends StatelessWidget {
   final MenuItemEntity item;
   final int selectedQuantity; // 0 if not selected, >=1 if selected
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
   final VoidCallback onDecrement;
 
   const OrderItemCard({
@@ -13,6 +14,7 @@ class OrderItemCard extends StatelessWidget {
     required this.item,
     required this.selectedQuantity,
     required this.onTap,
+    required this.onLongPress,
     required this.onDecrement,
   });
 
@@ -26,6 +28,7 @@ class OrderItemCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
+      onLongPress: isSelected ? onLongPress : null,
       behavior: HitTestBehavior.opaque,
       child: Stack(
         clipBehavior: Clip.none,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../active_tables/domain/entities/table_entity.dart';
 
@@ -22,17 +23,20 @@ class TableActiveOrderCard extends StatelessWidget {
     final total = subtotal + tax;
 
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(16.0),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border(
+          left: BorderSide(
+            color: theme.primaryColor,
+            width: 4.w,
+          ),
         ),
         boxShadow: [
           BoxShadow(
             color: theme.shadowColor.withValues(alpha: 0.05),
-            blurRadius: 6.0,
+            blurRadius: 8.r,
             offset: const Offset(0, 2),
           ),
         ],
@@ -40,50 +44,52 @@ class TableActiveOrderCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header: Icon + "Active Order" + Items Badge
+          // 1. Header: Icon + "Active Order" + Badge "X ITEMS"
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Icon(
-                    Icons.receipt_long_rounded,
+                    Icons.receipt_long_outlined,
                     color: colorScheme.onSurface,
-                    size: 22.0,
+                    size: 20.r,
                   ),
-                  const SizedBox(width: 8.0),
+                  SizedBox(width: 8.w),
                   Text(
                     AppStrings.activeOrder,
                     style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       color: colorScheme.onSurface,
+                      fontSize: 16.sp,
                     ),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
                   color: colorScheme.secondaryContainer,
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Text(
                   '$itemsCount ${AppStrings.itemsSuffix}',
                   style: textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: colorScheme.onSecondaryContainer,
-                    fontSize: 10.0,
+                    fontSize: 10.sp,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16.0),
+          SizedBox(height: 16.h),
 
-          // Items List
+          // 2. Alternating Items List
           if (table.items.isEmpty)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              padding: EdgeInsets.symmetric(vertical: 16.h),
               child: Text(
                 AppStrings.noItemsAdded,
                 style: textTheme.bodySmall?.copyWith(
@@ -92,43 +98,51 @@ class TableActiveOrderCard extends StatelessWidget {
               ),
             )
           else
-            ListView.separated(
+            ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: table.items.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8.0),
               itemBuilder: (context, index) {
                 final item = table.items[index];
+                final isEven = index % 2 == 1;
+
                 return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                   decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainerLow.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(8.0),
+                    color: isEven
+                        ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.3)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Row(
                     children: [
+                      // Quantity Tag e.g. 2x
                       Text(
                         '${item.quantity}x',
                         style: textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: theme.primaryColor,
+                          fontSize: 12.sp,
                         ),
                       ),
-                      const SizedBox(width: 12.0),
+                      SizedBox(width: 16.w),
+                      // Item Name
                       Expanded(
                         child: Text(
                           item.name,
                           style: textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: colorScheme.onSurface,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),
+                      // Price
                       Text(
                         '${(item.price * item.quantity).toStringAsFixed(2)} ${AppStrings.currency}',
                         style: textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
                           color: colorScheme.onSurfaceVariant,
+                          fontSize: 12.sp,
                         ),
                       ),
                     ],
@@ -137,9 +151,11 @@ class TableActiveOrderCard extends StatelessWidget {
               },
             ),
 
-          const Divider(height: 24.0),
+          SizedBox(height: 12.h),
+          Divider(height: 1.h, color: colorScheme.outlineVariant.withValues(alpha: 0.4)),
+          SizedBox(height: 14.h),
 
-          // Financial Breakdown
+          // 3. Financial Breakdown (Subtotal, Tax, Total)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -147,18 +163,20 @@ class TableActiveOrderCard extends StatelessWidget {
                 AppStrings.subtotal,
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
+                  fontSize: 13.5.sp,
                 ),
               ),
               Text(
                 '${subtotal.toStringAsFixed(2)} ${AppStrings.currency}',
                 style: textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 13.5.sp,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4.0),
+          SizedBox(height: 6.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -166,18 +184,20 @@ class TableActiveOrderCard extends StatelessWidget {
                 AppStrings.tax14Percent,
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
+                  fontSize: 13.5.sp,
                 ),
               ),
               Text(
                 '${tax.toStringAsFixed(2)} ${AppStrings.currency}',
                 style: textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 13.5.sp,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -186,13 +206,15 @@ class TableActiveOrderCard extends StatelessWidget {
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colorScheme.onSurface,
+                  fontSize: 16.sp,
                 ),
               ),
               Text(
                 '${total.toStringAsFixed(2)} ${AppStrings.currency}',
                 style: textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.primaryColor,
+                  fontWeight: FontWeight.w800,
+                  color: colorScheme.onSurface,
+                  fontSize: 20.sp,
                 ),
               ),
             ],

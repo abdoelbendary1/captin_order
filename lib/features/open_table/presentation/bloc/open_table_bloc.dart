@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/error/failure.dart';
-import '../../../active_tables/domain/entities/table_entity.dart';
 import '../../domain/repositories/open_table_repository.dart';
 import 'open_table_event.dart';
 import 'open_table_state.dart';

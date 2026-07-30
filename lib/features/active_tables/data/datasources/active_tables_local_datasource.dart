@@ -14,6 +14,6 @@ class ActiveTablesLocalDataSourceImpl implements ActiveTablesLocalDataSource {
 
   @override
   Future<List<TableEntity>> getActiveTables() async {
-    return await _tablesStore.getActiveTables();
+    return await _tablesStore.getAllTables();
   }
 }

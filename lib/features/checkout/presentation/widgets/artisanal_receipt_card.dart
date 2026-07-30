@@ -21,7 +21,10 @@ class ArtisanalReceiptCard extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final subtotal = table.items.fold<double>(0.0, (sum, i) => sum + (i.price * i.quantity));
+    final subtotal = table.items.fold<double>(
+      0.0,
+      (sum, i) => sum + (i.price * i.quantity),
+    );
     final tax = subtotal * 0.08;
     final totalAmount = subtotal + tax + tipAmount;
 
@@ -30,88 +33,97 @@ class ArtisanalReceiptCard extends StatelessWidget {
         : '14:22 PM';
 
     return ClipPath(
-      clipper: const SerratedEdgeClipper(triangleWidth: 10.0, triangleHeight: 8.0),
+      clipper: const SerratedEdgeClipper(
+        triangleWidth: 10.0,
+        triangleHeight: 8.0,
+      ),
       child: Container(
-        color: colorScheme.surfaceContainerLowest,
-        padding: const EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 24.0),
+        color: colorScheme.surfaceContainerLowest, // Theme White (#FFFFFF)
+        padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 24.h),
         child: Column(
           children: [
-            // Title & Subtitle
+            // 1. Title & Subtitle (Monospace)
             Text(
               AppStrings.shopCaptain,
               style: textTheme.titleMedium?.copyWith(
+                fontFamily: 'JetBrains Mono',
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2.0,
                 color: colorScheme.onSurface,
+                fontSize: 16.sp,
               ),
             ),
-            const SizedBox(height: 4.0),
+            SizedBox(height: 4.h),
             Text(
               '${AppStrings.artisanalWorkspace} • Order #${table.id.length > 4 ? table.id.substring(table.id.length - 4) : '8821'}',
               style: textTheme.labelSmall?.copyWith(
+                fontFamily: 'JetBrains Mono',
                 color: colorScheme.onSurfaceVariant,
-                fontSize: 11.0,
+                fontSize: 11.sp,
               ),
             ),
-            const SizedBox(height: 16.0),
+            SizedBox(height: 16.h),
 
             // Dotted Divider
             const _DottedLine(),
-            const SizedBox(height: 16.0),
+            SizedBox(height: 16.h),
 
-            // Status Banner
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12.0),
-              decoration: BoxDecoration(
-                color: colorScheme.secondaryContainer.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border(
-                  left: BorderSide(
-                    color: theme.primaryColor,
-                    width: 3.5,
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.statusLabel,
-                        style: textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                          fontSize: 10.0,
-                        ),
-                      ),
-                      const SizedBox(height: 2.0),
-                      Text(
-                        AppStrings.readyForCheckout,
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.onSecondaryContainer,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.check_circle_rounded,
-                    color: theme.primaryColor,
-                    size: 24.0,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16.0),
+            // 2. Status Banner
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+            //   decoration: BoxDecoration(
+            //     color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+            //     borderRadius: BorderRadius.circular(10.r),
+            //     border: Border(
+            //       left: BorderSide(
+            //         color: theme.primaryColor,
+            //         width: 4.w,
+            //       ),
+            //     ),
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             AppStrings.statusLabel,
+            //             style: textTheme.labelSmall?.copyWith(
+            //               fontFamily: 'JetBrains Mono',
+            //               color: colorScheme.onSurfaceVariant,
+            //               fontSize: 10.sp,
+            //             ),
+            //           ),
+            //           SizedBox(height: 2.h),
+            //           Text(
+            //             AppStrings.readyForCheckout,
+            //             style: textTheme.bodyMedium?.copyWith(
+            //               fontWeight: FontWeight.bold,
+            //               color: colorScheme.onSurface,
+            //               fontSize: 15.sp,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       Icon(
+            //         Icons.check_circle_rounded,
+            //         color: theme.primaryColor,
+            //         size: 24.r,
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(height: 18.h),
 
-            // Items List
+            // 3. Itemized Receipt Items (Monospace)
             if (table.items.isEmpty)
               Padding(
-                padding:  EdgeInsets.symmetric(vertical: 10.h ),
+                padding: EdgeInsets.symmetric(vertical: 10.h),
                 child: Text(
                   AppStrings.noItemsAdded,
                   style: textTheme.bodySmall?.copyWith(
+                    fontFamily: 'JetBrains Mono',
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -121,7 +133,7 @@ class ArtisanalReceiptCard extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: table.items.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10.0),
+                separatorBuilder: (_, __) => SizedBox(height: 10.h),
                 itemBuilder: (context, index) {
                   final item = table.items[index];
                   return Row(
@@ -132,25 +144,31 @@ class ArtisanalReceiptCard extends StatelessWidget {
                           Text(
                             '${item.quantity}x',
                             style: textTheme.bodyMedium?.copyWith(
+                              fontFamily: 'JetBrains Mono',
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onSurface,
+                              fontSize: 13.sp,
                             ),
                           ),
-                          const SizedBox(width: 10.0),
+                          SizedBox(width: 10.w),
                           Text(
                             item.name,
                             style: textTheme.bodyMedium?.copyWith(
+                              fontFamily: 'JetBrains Mono',
                               color: colorScheme.onSurface,
                               fontWeight: FontWeight.w500,
+                              fontSize: 13.sp,
                             ),
                           ),
                         ],
                       ),
                       Text(
-                        '${(item.price * item.quantity).toStringAsFixed(2)} ${AppStrings.currency}',
+                        '${AppStrings.currencySymbol}${(item.price * item.quantity).toStringAsFixed(2)}',
                         style: textTheme.bodyMedium?.copyWith(
+                          fontFamily: 'JetBrains Mono',
                           fontWeight: FontWeight.bold,
                           color: colorScheme.onSurface,
+                          fontSize: 13.sp,
                         ),
                       ),
                     ],
@@ -158,73 +176,85 @@ class ArtisanalReceiptCard extends StatelessWidget {
                 },
               ),
 
-            const SizedBox(height: 16.0),
+            SizedBox(height: 18.h),
             const _DottedLine(),
-            const SizedBox(height: 16.0),
+            SizedBox(height: 16.h),
 
-            // Subtotal & Tax Breakdown
+            // 4. Subtotal & Tax Breakdown (Monospace)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   AppStrings.subtotal,
                   style: textTheme.bodySmall?.copyWith(
+                    fontFamily: 'JetBrains Mono',
                     color: colorScheme.onSurfaceVariant,
+                    fontSize: 12.sp,
                   ),
                 ),
                 Text(
-                  '${subtotal.toStringAsFixed(2)} ${AppStrings.currency}',
+                  '${AppStrings.currencySymbol}${subtotal.toStringAsFixed(2)}',
                   style: textTheme.bodySmall?.copyWith(
+                    fontFamily: 'JetBrains Mono',
                     fontWeight: FontWeight.w600,
                     color: colorScheme.onSurface,
+                    fontSize: 12.sp,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 6.0),
+            SizedBox(height: 6.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   AppStrings.tax8Percent,
                   style: textTheme.bodySmall?.copyWith(
+                    fontFamily: 'JetBrains Mono',
                     color: colorScheme.onSurfaceVariant,
+                    fontSize: 12.sp,
                   ),
                 ),
                 Text(
-                  '${tax.toStringAsFixed(2)} ${AppStrings.currency}',
+                  '${AppStrings.currencySymbol}${tax.toStringAsFixed(2)}',
                   style: textTheme.bodySmall?.copyWith(
+                    fontFamily: 'JetBrains Mono',
                     fontWeight: FontWeight.w600,
                     color: colorScheme.onSurface,
+                    fontSize: 12.sp,
                   ),
                 ),
               ],
             ),
             if (tipAmount > 0) ...[
-              const SizedBox(height: 6.0),
+              SizedBox(height: 6.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     AppStrings.tipAmountLabel,
                     style: textTheme.bodySmall?.copyWith(
+                      fontFamily: 'JetBrains Mono',
                       color: colorScheme.onSurfaceVariant,
+                      fontSize: 12.sp,
                     ),
                   ),
                   Text(
-                    '${tipAmount.toStringAsFixed(2)} ${AppStrings.currency}',
+                    '${AppStrings.currencySymbol}${tipAmount.toStringAsFixed(2)}',
                     style: textTheme.bodySmall?.copyWith(
+                      fontFamily: 'JetBrains Mono',
                       fontWeight: FontWeight.w600,
                       color: theme.primaryColor,
+                      fontSize: 12.sp,
                     ),
                   ),
                 ],
               ),
             ],
 
-            const SizedBox(height: 12.0),
+            SizedBox(height: 14.h),
 
-            // Total Amount Line
+            // 5. Total Amount Line
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -233,33 +263,37 @@ class ArtisanalReceiptCard extends StatelessWidget {
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: colorScheme.onSurface,
+                    fontSize: 17.sp,
                   ),
                 ),
                 Text(
-                  '${totalAmount.toStringAsFixed(2)} ${AppStrings.currency}',
+                  '${AppStrings.currencySymbol}${totalAmount.toStringAsFixed(2)}',
                   style: textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.primaryColor,
+                    fontFamily: 'JetBrains Mono',
+                    fontWeight: FontWeight.w800,
+                    color: colorScheme.onSurface,
+                    fontSize: 22.sp,
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(height: 20.0),
+            SizedBox(height: 22.h),
 
-            // Footer metadata: Table & Captain & Time
+            // 6. Footer metadata: Table & Captain & Time (Monospace)
             Text(
-              'Table ${table.tableNumber} • ${AppStrings.waiter}: ${table.assignedCaptain ?? AppStrings.captainName} • $formattedTime',
+              'Table ${table.tableNumber} • Waiter: Captain Portrait • $formattedTime',
               style: textTheme.labelSmall?.copyWith(
+                fontFamily: 'JetBrains Mono',
                 color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                fontSize: 10.0,
+                fontSize: 10.sp,
               ),
             ),
-            const SizedBox(height: 12.0),
+            SizedBox(height: 14.h),
 
             // Barcode Representation
-            const BarcodeWidget(height: 32.0),
-            const SizedBox(height: 8.0),
+            BarcodeWidget(height: 36.h),
+            SizedBox(height: 8.h),
           ],
         ),
       ),
@@ -289,9 +323,7 @@ class _DottedLine extends StatelessWidget {
             return SizedBox(
               width: dashWidth,
               height: 1.0,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: color),
-              ),
+              child: DecoratedBox(decoration: BoxDecoration(color: color)),
             );
           }),
         );

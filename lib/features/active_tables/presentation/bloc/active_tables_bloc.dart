@@ -15,20 +15,31 @@ class ActiveTablesBloc extends Bloc<ActiveTablesEvent, ActiveTablesState> {
     on<LoadTablesEvent>(_onLoadTables);
     on<RefreshTablesEvent>(_onRefreshTables);
     on<SelectTabEvent>(_onSelectTab);
-    on<SearchTablesEvent>(_onSearchTables);
+    on<FilterByStatusEvent>(_onFilterByStatus);
     on<RetryEvent>(_onRetry);
   }
 
-  List<TableEntity> _filterByLocationAndQuery(TableLocation location, String query) {
-    final trimmedQuery = query.toLowerCase().trim();
+  List<TableEntity> _filterTables(TableLocation location, TableStatusFilter filter) {
     return _allTables.where((t) {
-      final isActive = t.status == TableStatus.occupied || t.status == TableStatus.reserved;
-      final matchesLocation = t.location == location;
-      final matchesQuery = trimmedQuery.isEmpty ||
-          t.tableNumber.toLowerCase().contains(trimmedQuery) ||
-          t.tableCode.toLowerCase().contains(trimmedQuery);
-      return isActive && matchesLocation && matchesQuery;
+      if (t.location != location) return false;
+
+      switch (filter) {
+        case TableStatusFilter.all:
+          return true;
+        case TableStatusFilter.available:
+          return t.status == TableStatus.available;
+        case TableStatusFilter.occupied:
+          return t.status == TableStatus.occupied || t.status == TableStatus.reserved;
+      }
     }).toList();
+  }
+
+  (int all, int available, int occupied) _calculateCounts(TableLocation location) {
+    final locationTables = _allTables.where((t) => t.location == location);
+    final all = locationTables.length;
+    final available = locationTables.where((t) => t.status == TableStatus.available).length;
+    final occupied = locationTables.where((t) => t.status == TableStatus.occupied || t.status == TableStatus.reserved).length;
+    return (all, available, occupied);
   }
 
   Future<void> _onLoadTables(
@@ -39,18 +50,11 @@ class ActiveTablesBloc extends Bloc<ActiveTablesEvent, ActiveTablesState> {
     final result = await _repository.getActiveTables();
     result.fold(
       (failure) => emit(
-         ActiveTablesState.error(message: AppStrings.errorMessage),
+        ActiveTablesState.error(message: AppStrings.errorMessage),
       ),
       (tables) {
         _allTables = tables;
-        final inside = _filterByLocationAndQuery(TableLocation.inside, '');
-        final outside = _filterByLocationAndQuery(TableLocation.outside, '');
-        emit(ActiveTablesState.success(
-          insideTables: inside,
-          outsideTables: outside,
-          selectedTabIndex: 0,
-          searchQuery: '',
-        ));
+        _emitSuccessState(emit, tabIndex: 0, filter: TableStatusFilter.all);
       },
     );
   }
@@ -62,20 +66,13 @@ class ActiveTablesBloc extends Bloc<ActiveTablesEvent, ActiveTablesState> {
     final result = await _repository.getActiveTables();
     result.fold(
       (failure) => emit(
-         ActiveTablesState.error(message: AppStrings.errorMessage),
+        ActiveTablesState.error(message: AppStrings.errorMessage),
       ),
       (tables) {
         _allTables = tables;
         final currentTab = state is SuccessState ? (state as SuccessState).selectedTabIndex : 0;
-        final currentQuery = state is SuccessState ? (state as SuccessState).searchQuery : '';
-        final inside = _filterByLocationAndQuery(TableLocation.inside, currentQuery);
-        final outside = _filterByLocationAndQuery(TableLocation.outside, currentQuery);
-        emit(ActiveTablesState.success(
-          insideTables: inside,
-          outsideTables: outside,
-          selectedTabIndex: currentTab,
-          searchQuery: currentQuery,
-        ));
+        final currentFilter = state is SuccessState ? (state as SuccessState).selectedFilter : TableStatusFilter.all;
+        _emitSuccessState(emit, tabIndex: currentTab, filter: currentFilter);
       },
     );
   }
@@ -85,27 +82,41 @@ class ActiveTablesBloc extends Bloc<ActiveTablesEvent, ActiveTablesState> {
     Emitter<ActiveTablesState> emit,
   ) {
     if (state is SuccessState) {
-      final currentState = state as SuccessState;
-      emit(currentState.copyWith(
-        selectedTabIndex: event.index,
-      ));
+      final currentFilter = (state as SuccessState).selectedFilter;
+      _emitSuccessState(emit, tabIndex: event.index, filter: currentFilter);
     }
   }
 
-  void _onSearchTables(
-    SearchTablesEvent event,
+  void _onFilterByStatus(
+    FilterByStatusEvent event,
     Emitter<ActiveTablesState> emit,
   ) {
     if (state is SuccessState) {
-      final currentState = state as SuccessState;
-      final inside = _filterByLocationAndQuery(TableLocation.inside, event.query);
-      final outside = _filterByLocationAndQuery(TableLocation.outside, event.query);
-      emit(currentState.copyWith(
-        searchQuery: event.query,
-        insideTables: inside,
-        outsideTables: outside,
-      ));
+      final currentTab = (state as SuccessState).selectedTabIndex;
+      _emitSuccessState(emit, tabIndex: currentTab, filter: event.filter);
     }
+  }
+
+  void _emitSuccessState(
+    Emitter<ActiveTablesState> emit, {
+    required int tabIndex,
+    required TableStatusFilter filter,
+  }) {
+    final inside = _filterTables(TableLocation.inside, filter);
+    final outside = _filterTables(TableLocation.outside, filter);
+
+    final currentLocation = tabIndex == 0 ? TableLocation.inside : TableLocation.outside;
+    final (allCount, availableCount, occupiedCount) = _calculateCounts(currentLocation);
+
+    emit(ActiveTablesState.success(
+      insideTables: inside,
+      outsideTables: outside,
+      selectedTabIndex: tabIndex,
+      selectedFilter: filter,
+      allCount: allCount,
+      availableCount: availableCount,
+      occupiedCount: occupiedCount,
+    ));
   }
 
   Future<void> _onRetry(

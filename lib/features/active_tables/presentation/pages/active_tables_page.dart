@@ -5,20 +5,29 @@ import '../bloc/active_tables_bloc.dart';
 import '../bloc/active_tables_event.dart';
 import '../bloc/active_tables_state.dart';
 import '../widgets/custom_header.dart';
-import '../widgets/custom_search_bar.dart';
+import '../widgets/table_status_filter_chips.dart';
 import '../widgets/error_view.dart';
 import '../widgets/segmented_toggle_tab.dart';
 import '../widgets/shimmer_loading_view.dart';
 import '../widgets/tables_grid_view.dart';
+
+import '../bloc/ticker_cubit.dart';
 
 class ActiveTablesPage extends StatelessWidget {
   const ActiveTablesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ActiveTablesBloc>(
-      create: (context) =>
-          getIt<ActiveTablesBloc>()..add(const ActiveTablesEvent.loadTables()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ActiveTablesBloc>(
+          create: (context) =>
+              getIt<ActiveTablesBloc>()..add(const ActiveTablesEvent.loadTables()),
+        ),
+        BlocProvider<TickerCubit>(
+          create: (context) => getIt<TickerCubit>(),
+        ),
+      ],
       child: const ActiveTablesView(),
     );
   }
@@ -101,14 +110,8 @@ class _ActiveTablesViewState extends State<ActiveTablesView> {
               },
             ),
 
-            // 3. Search Bar (Always visible)
-            CustomSearchBar(
-              onChanged: (query) {
-                context.read<ActiveTablesBloc>().add(
-                      ActiveTablesEvent.searchTables(query: query),
-                    );
-              },
-            ),
+            // 3. Status Filter Chips (All, Available, Occupied with counts)
+            const TableStatusFilterChips(),
 
             // 4. Swipeable PageView Cards Content Area
             Expanded(

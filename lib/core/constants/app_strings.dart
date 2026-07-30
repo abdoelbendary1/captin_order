@@ -34,10 +34,20 @@ abstract class AppStrings {
   static String get navHall => _tr('Hall', 'الصالة');
   static String get navOrders => _tr('Orders', 'الأوردرات');
   static String get navNewTable => _tr('New Table', 'تربيزة جديدة');
+  static String get navTakeAway => _tr('Take Away', 'تيك أوي');
+  static String get takeAway => _tr('Take Away', 'تيك أوي');
   static String get navShift => _tr('Shift', 'الشيفت');
   static String get navHistory => _tr('History', 'السجل');
   static String get navActive => _tr('Active', 'الشغالة');
   static String get navTables => _tr('Tables', 'الترابيزات');
+
+  // Filter Chips & Table Actions
+  static String get filterAll => _tr('All', 'الكل');
+  static String get filterAvailable => _tr('Available', 'فاضية');
+  static String get filterOccupied => _tr('Occupied', 'مشغولة');
+  static String get tapToOpen => _tr('Tap to Open', 'اضغط للفتح');
+  static String get availableStatus => _tr('Available', 'فاضية');
+  static String get occupiedStatus => _tr('Occupied', 'مشغولة');
 
   // Units & Currency
   static String get currency => _tr('EGP', 'ج.م');
@@ -133,4 +143,149 @@ abstract class AppStrings {
   static String get appInformation => _tr('App Info & Staff', 'معلومات التطبيق');
   static String get version => _tr('Version 1.0.0', 'الإصدار ١.٠.٠');
   static String get staffProfile => _tr('Staff Profile', 'بروفايل الكابتن');
+
+  // Auth Strings
+  static String get espressoLogic => _tr('ESPRESSO LOGIC', 'إسبريسو لوجيك');
+  static String get welcomeBack => _tr('Welcome Back', 'أهلاً بيك تاني');
+  static String get accessTerminalSubtitle => _tr('Access your shop management terminal.', 'سجل دخول للتحكم في الكافيه.');
+  static String get staffIdOrEmail => _tr('STAFF ID OR EMAIL', 'كود الكابتن أو الإيميل');
+  static String get enterYourIdHint => _tr('Enter your ID', 'اكتب الكود بتاعك');
+  static String get pinOrPassword => _tr('PIN OR PASSWORD', 'الباسورد أو الرقم السري');
+  static String get forgotPassword => _tr('Forgot Password', 'نسيت الباسورد؟');
+  static String get rememberThisStation => _tr('Remember this station', 'افتكر المحطة دي');
+  static String get signIn => _tr('Sign In', 'تسجيل الدخول');
+  static String get needAnAccount => _tr('Need an account?', 'معندكش حساب؟');
+  static String get registerNewStaff => _tr('Register New Staff', 'سجل كابتن جديد');
+  static String get precisionQualityCraft => _tr('PRECISION • QUALITY • CRAFT', 'دقة • جودة • إتقان');
+  static String get joinTheCrew => _tr('Join the Crew', 'انضم للفريق');
+  static String get startJourneySubtitle => _tr('Start your journey as a Shop Captain team member.', 'ابتدى رحلتك كعضو في فريق كابتن الكافيه.');
+  static String get fullName => _tr('Full Name', 'الاسم بالكامل');
+  static String get egJulianVane => _tr('E.g. Julian Vane', 'مثلاً أحمد محمود');
+  static String get staffRole => _tr('Staff Role', 'الوظيفة');
+  static String get selectYourRole => _tr('Select your role', 'اختار وظيفتك');
+  static String get email => _tr('Email', 'الإيميل');
+  static String get emailHint => _tr('name@shopcaptain.com', 'name@shopcaptain.com');
+  static String get createSecurePin => _tr('Create Secure Pin', 'اكتب رقم سري آمن');
+  static String get pinCodeHint => _tr('4 to 6 digit code', 'كود من ٤ لـ ٦ أرقام');
+  static String get pinInfoNote => _tr('Use this PIN for quick tablet terminal access.', 'استخدم الكود ده للدخول السريع من التابلت.');
+  static String get register => _tr('Register', 'تسجيل حساب');
+  static String get alreadyPartOfCrew => _tr('Already part of the crew?', 'عضو بالفعل في الفريق؟');
+  static String get backToLogin => _tr('Back to Login', 'ارجع لتسجيل الدخول');
+
+
+  // Admin Dashboard Strings
+  static String get brewMasterAdmin => _tr('BrewMaster Admin', 'لوحة تحكم الأدمن');
+  static String get totalSales => _tr('TOTAL SALES', 'إجمالي المبيعات');
+  static String get todayVsYesterday => _tr('Today vs Yesterday', 'النهاردة مقارنة بـ إمبارح');
+  static String get totalOrdersUpper => _tr('TOTAL ORDERS', 'إجمالي الأوردرات');
+  static String get activeTablesUpper => _tr('ACTIVE TABLES', 'الترابيزات الشغالة');
+  static String get bestSellers => _tr('Best Sellers', 'الأكثر مبيعاً');
+  static String get last24h => _tr('LAST 24H', 'آخر ٢٤ ساعة');
+  static String get units => _tr('units', 'قطعة');
+  static String get zReports => _tr('Z-Reports (Past Shifts)', 'تقارير الشيفتات (زد ريبورت)');
+  static String get eveningShift => _tr('Evening Shift', 'شيفت مسائي');
+  static String get morningShiftAdmin => _tr('Morning Shift', 'شيفت صباحي');
+  static String get navDash => _tr('Dash', 'اللوحة');
+  static String get navSales => _tr('Sales', 'المبيعات');
+  static String get navStock => _tr('Stock', 'المخزن');
+  static String get navStaff => _tr('Staff', 'الفريق');
+  static String get navSetup => _tr('Setup', 'الإعدادات');
+
+  // Admin Menu Setup Strings
+  static String get cafeAdmin => _tr('Cafe Admin', 'أدمن الكافيه');
+  static String get menuManagement => _tr('Menu Management', 'إدارة المنيو');
+  static String get addNewItem => _tr('Add New Item', 'إضافة صنف جديد');
+  static String get itemName => _tr('Item Name', 'اسم الصنف');
+  static String get pistachioCortadoHint => _tr('e.g. Pistachio Cortado', 'مثلاً بستاشيو كورتادو');
+  static String get basePrice => _tr('Base Price', 'السعر الأولي');
+  static String get priceHint => _tr('0.00', '٠.٠٠');
+  static String get modifiersUpper => _tr('MODIFIERS', 'الإضافات');
+  static String get createNew => _tr('+ Create New', '+ إضافة جديد');
+  static String get saveItem => _tr('Save Item', 'حفظ الصنف');
+  static String get hotDrinks => _tr('Hot Drinks', 'مشروبات سخنة');
+  static String get coldDrinks => _tr('Cold Drinks', 'مشروبات باردة');
+  static String get bakery => _tr('Bakery', 'المخبوزات');
+  static String get teaAndTonics => _tr('Tea & Tonics', 'شاي وتونيك');
+  static String get pastries => _tr('Pastries', 'حلويات ومعجنات');
+  static String get navMenu => _tr('Menu', 'المنيو');
+
+  // Admin Place Setup (Tables & Zones) Strings
+  static String get zonesUpper => _tr('ZONES', 'المناطق');
+  static String get indoor => _tr('Indoor', 'داخلي');
+  static String get outdoor => _tr('Outdoor', 'خارجي');
+  static String get roof => _tr('Roof', 'الروف');
+  static String get bulkCreateTables => _tr('Bulk Create Tables', 'إنشاء ترابيزات بالجملة');
+  static String get countLabel => _tr('Count', 'العدد');
+  static String get generate => _tr('Generate', 'توليد');
+  static String get activeFloorPlan => _tr('ACTIVE FLOOR PLAN', 'مخطط الترابيزات الفعال');
+  static String get tablesBadge => _tr('Tables', 'تربيزة');
+  static String get manualTile => _tr('Manual', 'يدوي');
+  static String get navPlace => _tr('Floor Plan', 'المكان');
+
+  // Admin Staff / Team & Audit Log Strings
+  static String get employeeDirectory => _tr('Employee Directory', 'دليل الموظفين');
+  static String get activeStaffBadge => _tr('Active', 'نشط');
+  static String get pin => _tr('PIN', 'الرمز');
+  static String get auditLog => _tr('Audit Log', 'سجل العمليات');
+  static String get last7Days => _tr('Last 7 Days', 'آخر ٧ أيام');
+  static String get allStaff => _tr('All Staff', 'كل الموظفين');
+  static String get refundBadge => _tr('Refund', 'استرجاع');
+  static String get orderEditBadge => _tr('Order Edit', 'تعديل طلب');
+  static String get exportCsv => _tr('Export CSV', 'تصدير CSV');
+  static String get addStaff => _tr('Add Staff Member', 'إضافة موظف جديد');
+  static String get staffName => _tr('Staff Name', 'اسم الموظف');
+  static String get role => _tr('Role', 'الدور');
+  static String get staffTab => _tr('Staff', 'الفريق');
+
+  // Admin System Settings Strings
+  static String get systemSettings => _tr('System Settings', 'إعدادات النظام');
+  static String get invoiceDetailsUpper => _tr('INVOICE DETAILS', 'تفاصيل الفاتورة');
+  static String get storeLogo => _tr('Store Logo', 'شعار المحل');
+  static String get uploadPngHint => _tr('Upload transparent PNG (max 500kb)', 'رفع PNG شفاف (بحد أقصى ٥٠٠ كيلوبايت)');
+  static String get cafeName => _tr('Cafe Name', 'اسم الكافيه');
+  static String get welcomeMessageFooter => _tr('Welcome Message (Footer)', 'رسالة أسفل الفاتورة');
+  static String get taxAndServiceUpper => _tr('% TAX & SERVICE', 'الضريبة والخدمة %');
+  static String get vatPercent => _tr('VAT (%)', 'ضريبة القيمة المضافة (%)');
+  static String get serviceChargePercent => _tr('Service Charge (%)', 'نسبة الخدمة (%)');
+  static String get networkPrinterSetup => _tr('Network Printer Setup', 'إعدادات طابعة الشبكة');
+  static String get printerType => _tr('Printer Type', 'نوع الطابعة');
+  static String get cashierReceipts => _tr('Cashier (Receipts)', 'الكاشير (الفواتير)');
+  static String get kitchenReceipts => _tr('Kitchen (KDS)', 'المطبخ');
+  static String get barReceipts => _tr('Bar / Drinks', 'البار');
+  static String get discoverPrinter => _tr('Discover Printer', 'البحث عن طابعة');
+  static String get testPrint => _tr('Test Print', 'طباعة تجريبية');
+  static String get statusConnected => _tr('Status: Connected', 'الحالة: متصل');
+  static String get defaultPrinterIp => _tr('IP: 192.168.1.104', 'آي بي: 192.168.1.104');
+  static String get saveChanges => _tr('Save Changes', 'حفظ التغييرات');
+  static String get reset => _tr('Reset', 'إعادة ضبط');
+
+  // Setup & Options
+  static String get general => _tr('General', 'عام');
+  static String get preferences => _tr('Preferences', 'التفضيلات');
+  static String get account => _tr('Account', 'الحساب');
+  static String get editProfile => _tr('Edit Profile', 'تعديل البروفايل');
+  static String get changePassword => _tr('Change Password', 'تغيير كلمة السر');
+  static String get menuSetup => _tr('Menu Setup', 'إعداد المنيو');
+  static String get tablesAndFloorSetup => _tr('Tables & Floor Setup', 'إعداد المكان والترابيزات');
+  static String get printerSetup => _tr('Printer Setup', 'إعداد الطابعة');
+  static String get invoiceAndTaxDetails => _tr('Invoice & Tax Details', 'تفاصيل الفاتورة والضريبة');
+  static String get logoutStation => _tr('Logout Station', 'تسجيل خروج المحطة');
+  static String get systemDefault => _tr('System Default', 'الوضع الافتراضي للنظام');
+  static String get lightMode => _tr('Light Mode', 'الوضع الفاتح');
+  static String get darkMode => _tr('Dark Mode', 'الوضع الداكن');
+  static String get savePrinterSettings => _tr('Save Printer Settings', 'حفظ إعدادات الطابعة');
+  static String get saveDetails => _tr('Save Details', 'حفظ التفاصيل');
+
+  // Shift History & Reports
+  static String get shiftHistoryTitle => _tr('Shift History & Reports', 'سجل وتقارير الشيفتات');
+  static String get selectDateRange => _tr('Date Range', 'الفترة الزمنية');
+  static String get selectStaffMember => _tr('Staff Member', 'الموظف');
+  static String get downloadPdfReport => _tr('Download Shift Report (PDF)', 'تحميل تقرير الشيفت (PDF)');
+  static String get totalShifts => _tr('Total Shifts', 'إجمالي الشيفتات');
+  static String get totalHours => _tr('Total Hours', 'إجمالي الساعات');
+  static String get salesProcessed => _tr('Sales Processed', 'إجمالي المبيعات');
+  static String get ordersCompleted => _tr('Orders Completed', 'الأوردرات المغلقة');
+  static String get pdfExportSuccess => _tr('Shift History PDF exported successfully!', 'تم تصدير تقرير الشيفتات PDF بنجاح!');
+  static String get today => _tr('Today', 'اليوم');
+  static String get thisMonth => _tr('This Month', 'هذا الشهر');
 }

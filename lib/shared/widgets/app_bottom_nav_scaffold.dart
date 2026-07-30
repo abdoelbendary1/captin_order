@@ -22,7 +22,6 @@ class AppBottomNavScaffold extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: Container(
-        // Seamless background with no top separator border line
         decoration: BoxDecoration(
           color: colorScheme.surface,
         ),
@@ -33,10 +32,10 @@ class AppBottomNavScaffold extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                // LTR Nav Bar Row of Fixed Items
+                // LTR Nav Bar Row (Hall on Left, Shift on Right)
                 Positioned.fill(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Item 1 (Leftmost - Branch 0): Hall / Inside
@@ -48,40 +47,22 @@ class AppBottomNavScaffold extends StatelessWidget {
                         onTap: () => _onTabSelected(0),
                       ),
 
-                      // Item 2 (Branch 1): Orders
-                      _NavTabItem(
-                        icon: Icons.receipt_long_outlined,
-                        selectedIcon: Icons.receipt_long_rounded,
-                        label: AppStrings.navOrders,
-                        isSelected: navigationShell.currentIndex == 1,
-                        onTap: () => _onTabSelected(1),
-                      ),
-
                       // Spacer for fixed center FAB button
                       SizedBox(width: 60.w),
 
-                      // Item 4 (Branch 2): Shift
+                      // Item 2 (Rightmost - Branch 1): Shift
                       _NavTabItem(
                         icon: Icons.access_time_rounded,
                         selectedIcon: Icons.access_time_filled_rounded,
                         label: AppStrings.navShift,
-                        isSelected: navigationShell.currentIndex == 2,
-                        onTap: () => _onTabSelected(2),
-                      ),
-
-                      // Item 5 (Rightmost - Branch 3): History
-                      _NavTabItem(
-                        icon: Icons.history_rounded,
-                        selectedIcon: Icons.history_toggle_off_rounded,
-                        label: AppStrings.navHistory,
-                        isSelected: navigationShell.currentIndex == 3,
-                        onTap: () => _onTabSelected(3),
+                        isSelected: navigationShell.currentIndex == 1,
+                        onTap: () => _onTabSelected(1),
                       ),
                     ],
                   ),
                 ),
 
-                // Center Prominent "New Table" Action Button with Small White Frame
+                // Center Prominent "Take Away" Action Button
                 Positioned(
                   top: -14.h,
                   left: 0,
@@ -89,11 +70,10 @@ class AppBottomNavScaffold extends StatelessWidget {
                   child: Center(
                     child: GestureDetector(
                       onTap: () async {
-                        final result =
-                            await const OpenTableRoute().push<bool>(context);
-                        if (result == true && context.mounted) {
-                          // Action completed
-                        }
+                        await OrderItemsRoute(
+                          tableNumber: 'TakeAway_${DateTime.now().millisecondsSinceEpoch}',
+                          areaName: AppStrings.takeAway,
+                        ).push(context);
                       },
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -105,7 +85,7 @@ class AppBottomNavScaffold extends StatelessWidget {
                               color: theme.primaryColor,
                               borderRadius: BorderRadius.circular(14.r),
                               border: Border.all(
-                                color: colorScheme.onPrimary, // Small white frame
+                                color: colorScheme.onPrimary,
                                 width: 2.5.r,
                               ),
                               boxShadow: [
@@ -117,14 +97,14 @@ class AppBottomNavScaffold extends StatelessWidget {
                               ],
                             ),
                             child: Icon(
-                              Icons.add_rounded,
+                              Icons.shopping_bag_outlined,
                               color: colorScheme.onPrimary,
-                              size: 28.r,
+                              size: 26.r,
                             ),
                           ),
                           SizedBox(height: 3.h),
                           Text(
-                            AppStrings.navNewTable,
+                            AppStrings.navTakeAway,
                             style: textTheme.labelSmall?.copyWith(
                               fontSize: 11.sp,
                               fontWeight: FontWeight.bold,

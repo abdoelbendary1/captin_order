@@ -1,71 +1,104 @@
 import 'dart:convert';
-import 'package:injectable/injectable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../features/active_tables/domain/entities/order_item.dart';
+import 'package:injectable/injectable.dart';
+
 import '../../features/active_tables/domain/entities/table_entity.dart';
 import '../../features/active_tables/domain/entities/timeline_event.dart';
 
-@LazySingleton()
+@lazySingleton
 class TablesStore {
-  static const String _storageKey = 'key_captin_order_tables_v3';
-  List<TableEntity> _tables = [];
-  bool _isInitialized = false;
+  static const String _storageKey = 'tables_store_v1';
+  final List<TableEntity> _tables = [];
+  bool _initialized = false;
+
+  TablesStore();
 
   Future<void> init() async {
-    if (_isInitialized) return;
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final jsonString = prefs.getString(_storageKey);
+    if (_initialized) return;
+    final prefs = await SharedPreferences.getInstance();
+    final rawJson = prefs.getString(_storageKey);
 
-      if (jsonString != null && jsonString.isNotEmpty) {
-        try {
-          final List<dynamic> jsonList = jsonDecode(jsonString);
-          _tables = jsonList.map((e) => TableEntity.fromJson(e)).toList();
-        } catch (e) {
-          _tables = _generateDefaultFullRestaurantTables();
-          await _saveToDisk();
-        }
-      } else {
-        _tables = _generateDefaultFullRestaurantTables();
-        await _saveToDisk();
-      }
-    } catch (e) {
-      if (_tables.isEmpty) {
-        _tables = _generateDefaultFullRestaurantTables();
+    if (rawJson != null && rawJson.isNotEmpty) {
+      try {
+        final List<dynamic> decoded = jsonDecode(rawJson);
+        _tables.clear();
+        _tables.addAll(
+          decoded.map(
+            (item) => TableEntity.fromJson(item as Map<String, dynamic>),
+          ),
+        );
+        _initialized = true;
+        return;
+      } catch (e) {
+        debugPrint('Error parsing saved tables from storage: $e');
       }
     }
-    _isInitialized = true;
+
+    // Seed default 40 tables if empty
+    _tables.clear();
+    _tables.addAll(_generateDefaultTables());
+    _initialized = true;
+    await _saveToDisk();
   }
 
   Future<void> _saveToDisk() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final jsonList = _tables.map((t) => t.toJson()).toList();
-      await prefs.setString(_storageKey, jsonEncode(jsonList));
-    } catch (_) {}
+      final encoded = jsonEncode(_tables.map((t) => t.toJson()).toList());
+      await prefs.setString(_storageKey, encoded);
+    } catch (e) {
+      debugPrint('Error saving tables to storage: $e');
+    }
   }
 
-  // --- QUERIES (SIMULATING SERVER DB) ---
+  bool _isTakeaway(TableEntity t) {
+    return t.tableNumber.toLowerCase().contains('takeaway') ||
+        t.areaName.toLowerCase().contains('takeaway') ||
+        t.id.toLowerCase().contains('takeaway');
+  }
+
+  // --- QUERIES ---
 
   Future<List<TableEntity>> getAllTables() async {
     await init();
-    return List.unmodifiable(_tables);
+    final restaurantTables = _tables.where((t) => !_isTakeaway(t));
+    return List.unmodifiable(restaurantTables.toList());
   }
 
-  Future<List<TableEntity>> getAvailableTables({TableLocation? location}) async {
+  Future<List<TableEntity>> getTakeawayOrders() async {
     await init();
-    final available = _tables.where((t) => t.status == TableStatus.available);
+    final takeawayOrders = _tables.where((t) => _isTakeaway(t));
+    return List.unmodifiable(takeawayOrders.toList());
+  }
+
+  Future<List<TableEntity>> getAvailableTables({
+    TableLocation? location,
+  }) async {
+    await init();
+    final available = _tables.where(
+      (t) => t.status == TableStatus.available && !_isTakeaway(t),
+    );
     if (location != null) {
-      return List.unmodifiable(available.where((t) => t.location == location).toList());
+      return List.unmodifiable(
+        available.where((t) => t.location == location).toList(),
+      );
     }
     return List.unmodifiable(available.toList());
   }
 
   Future<List<TableEntity>> getActiveTables({TableLocation? location}) async {
     await init();
-    final active = _tables.where((t) => t.status == TableStatus.occupied || t.status == TableStatus.reserved);
+    final active = _tables.where(
+      (t) =>
+          (t.status == TableStatus.occupied ||
+              t.status == TableStatus.reserved) &&
+          !_isTakeaway(t),
+    );
     if (location != null) {
-      return List.unmodifiable(active.where((t) => t.location == location).toList());
+      return List.unmodifiable(
+        active.where((t) => t.location == location).toList(),
+      );
     }
     return List.unmodifiable(active.toList());
   }
@@ -90,7 +123,7 @@ class TablesStore {
     return null;
   }
 
-  // --- MUTATIONS (SIMULATING SERVER API) ---
+  // --- MUTATIONS ---
 
   Future<TableEntity> openTableForGuest({
     required String tableNumber,
@@ -101,17 +134,18 @@ class TablesStore {
     await init();
     final now = DateTime.now();
     final areaLower = areaName.toLowerCase();
-    final isOutside = areaLower.contains('outdoor') ||
+    final isOutside =
+        areaLower.contains('outdoor') ||
         areaLower.contains('outside') ||
         areaLower.contains('patio');
 
     final existingTable = await getTableById(tableNumber);
 
-    final TimelineEvent checkInEvent = TimelineEvent(
-      id: 't_${now.millisecondsSinceEpoch}_checkin',
+    final checkInEvent = TimelineEvent(
+      id: 't_${now.millisecondsSinceEpoch}',
       title: 'Table Checked-in',
       timestamp: now,
-      actor: 'BY $captainName',
+      actor: 'BY ${captainName.toUpperCase()}',
     );
 
     final List<TimelineEvent> timeline = existingTable != null
@@ -123,7 +157,9 @@ class TablesStore {
       tableNumber: tableNumber,
       tableCode: 'T-${tableNumber.padLeft(2, '0')}',
       status: TableStatus.occupied,
-      location: existingTable?.location ?? (isOutside ? TableLocation.outside : TableLocation.inside),
+      location:
+          existingTable?.location ??
+          (isOutside ? TableLocation.outside : TableLocation.inside),
       guestCount: guestCount,
       currentTotal: existingTable?.currentTotal ?? 0.00,
       timeSeated: '00:00',
@@ -156,27 +192,37 @@ class TablesStore {
       0,
       TimelineEvent(
         id: 't_${now.millisecondsSinceEpoch}',
-        title: 'Table Settled ($paymentMethod)\n• Total: ${totalPaid.toStringAsFixed(2)} EGP',
+        title:
+            'Table Settled ($paymentMethod)\n• Total: ${totalPaid.toStringAsFixed(2)} EGP',
         timestamp: now,
         actor: 'BY CAPTAIN AHMED M.',
       ),
     );
 
-    final updated = (table ?? TableEntity(
-      id: tableId,
-      tableNumber: tableId,
-      status: TableStatus.available,
-      guestCount: 0,
-      currentTotal: 0.0,
-      areaName: 'Inside Hall',
-    )).copyWith(
-      status: TableStatus.available,
-      currentTotal: 0.0,
-      guestCount: 0,
-      items: const [],
-      timeline: newTimeline,
-      tableStatusDescription: 'Available for seating',
-    );
+    final isTakeawayOrder = table != null && _isTakeaway(table);
+
+    final updated =
+        (table ??
+                TableEntity(
+                  id: tableId,
+                  tableNumber: tableId,
+                  status: TableStatus.available,
+                  guestCount: 0,
+                  currentTotal: 0.0,
+                  areaName: 'Inside Hall',
+                ))
+            .copyWith(
+              status: isTakeawayOrder
+                  ? TableStatus.occupied
+                  : TableStatus.available,
+              currentTotal: isTakeawayOrder ? totalPaid : 0.0,
+              guestCount: isTakeawayOrder ? table?.guestCount ?? 1 : 0,
+              items: isTakeawayOrder ? table?.items ?? const [] : const [],
+              timeline: newTimeline,
+              tableStatusDescription: isTakeawayOrder
+                  ? 'Settled & Completed'
+                  : 'Available for seating',
+            );
 
     await saveOrUpdateTable(updated);
     return updated;
@@ -185,11 +231,15 @@ class TablesStore {
   Future<void> saveOrUpdateTable(TableEntity table) async {
     await init();
     final cleanId = table.id.trim();
-    final normNum = int.tryParse(table.tableNumber)?.toString();
+    final isTakeaway = _isTakeaway(table);
+    final normNum = isTakeaway
+        ? null
+        : int.tryParse(table.tableNumber)?.toString();
 
     final index = _tables.indexWhere((t) {
-      if (t.id == cleanId || t.tableNumber == table.tableNumber) return true;
-      if (normNum != null) {
+      if (t.id == cleanId) return true;
+      if (!isTakeaway && t.tableNumber == table.tableNumber) return true;
+      if (!isTakeaway && normNum != null) {
         final tNumNorm = int.tryParse(t.tableNumber)?.toString();
         if (tNumNorm == normNum) return true;
       }
@@ -205,183 +255,77 @@ class TablesStore {
   }
 
   Future<void> addTable(TableEntity table) async {
-    await saveOrUpdateTable(table);
-  }
-
-  Future<void> removeTable(String id) async {
     await init();
-    final cleanId = id.trim();
-    final normId = int.tryParse(cleanId)?.toString();
-
-    _tables.removeWhere((t) {
-      if (t.id == cleanId || t.tableNumber == cleanId) return true;
-      if (normId != null) {
-        final tNumNorm = int.tryParse(t.tableNumber)?.toString();
-        if (tNumNorm == normId) return true;
-      }
-      return false;
-    });
-
+    _tables.add(table);
     await _saveToDisk();
   }
 
-  // --- DEFAULT RESTAURANT SEED DATA ---
+  Future<void> updateTableStatus(String tableId, TableStatus status) async {
+    await init();
+    final index = _tables.indexWhere(
+      (t) => t.id == tableId || t.tableNumber == tableId,
+    );
+    if (index != -1) {
+      _tables[index] = _tables[index].copyWith(status: status);
+      await _saveToDisk();
+    }
+  }
 
-  List<TableEntity> _generateDefaultFullRestaurantTables() {
+  Future<void> resetAllTables() async {
+    _tables.clear();
+    _tables.addAll(_generateDefaultTables());
+    await _saveToDisk();
+  }
+
+  List<TableEntity> _generateDefaultTables() {
     final now = DateTime.now();
-    final List<TableEntity> result = [];
+    return [
+      // Table 1
+      TableEntity(
+        id: '1',
+        tableNumber: '01',
+        tableCode: 'T-01',
+        status: TableStatus.available,
+        location: TableLocation.inside,
+        guestCount: 0,
+        currentTotal: 0.00,
+        areaName: 'Main Hall',
+        capacity: 4,
+      ),
+      // Table 2
+      TableEntity(
+        id: '2',
+        tableNumber: '02',
+        tableCode: 'T-02',
+        status: TableStatus.available,
+        location: TableLocation.inside,
+        guestCount: 0,
+        currentTotal: 0.00,
+        areaName: 'Main Hall',
+        capacity: 2,
+      ),
+      // Tables 3 - 40
+      ...List.generate(38, (index) {
+        final num = index + 3;
+        final numStr = num.toString().padLeft(2, '0');
+        final isOutside = num > 30;
+        final area = isOutside
+            ? 'Terrace'
+            : (num > 15 ? 'VIP Section' : 'Main Hall');
+        final capacity = (num % 3 == 0) ? 6 : ((num % 2 == 0) ? 4 : 2);
 
-    // 1. Inside Hall Tables (20 Tables)
-    for (int i = 1; i <= 20; i++) {
-      final formattedNumber = i.toString().padLeft(2, '0');
-
-      if (i == 1) {
-        // Table 01: Occupied
-        result.add(TableEntity(
-          id: '1',
-          tableNumber: '01',
-          tableCode: 'T-01',
-          status: TableStatus.occupied,
-          location: TableLocation.inside,
-          guestCount: 2,
-          currentTotal: 45.00,
-          timeSeated: '15:20',
-          openedAt: now.subtract(const Duration(minutes: 15, seconds: 20)),
-          seatedAt: now.subtract(const Duration(minutes: 15, seconds: 20)),
-          areaName: 'Inside Hall',
-          assignedCaptain: 'Captain Ahmed M.',
-          capacity: 4,
-          items: const [
-            OrderItem(id: '1', name: 'French Coffee', price: 30.0, quantity: 1),
-            OrderItem(id: '2', name: 'Karkadeh Tea', price: 15.0, quantity: 1),
-          ],
-          tableStatusDescription: 'Occupied for 15 minutes. Kitchen is preparing drinks.',
-          timeline: [
-            TimelineEvent(
-              id: 't1',
-              title: 'Order Sent to Kitchen',
-              timestamp: now.subtract(const Duration(minutes: 15)),
-              actor: 'BY CAPTAIN AHMED M.',
-            ),
-            TimelineEvent(
-              id: 't2',
-              title: 'Table Checked-in',
-              timestamp: now.subtract(const Duration(minutes: 16)),
-              actor: 'QR SCAN',
-            ),
-          ],
-        ));
-      } else if (i == 2) {
-        // Table 02: Occupied
-        result.add(TableEntity(
-          id: '2',
-          tableNumber: '02',
-          tableCode: 'T-02',
-          status: TableStatus.occupied,
-          location: TableLocation.inside,
-          guestCount: 1,
-          currentTotal: 20.00,
-          timeSeated: '05:15',
-          openedAt: now.subtract(const Duration(minutes: 5, seconds: 15)),
-          seatedAt: now.subtract(const Duration(minutes: 5, seconds: 15)),
-          areaName: 'Inside Hall',
-          assignedCaptain: 'Captain Ahmed M.',
-          capacity: 2,
-          items: const [
-            OrderItem(id: '2', name: 'Plain Coffee', price: 20.0, quantity: 1),
-          ],
-          tableStatusDescription: 'Occupied for 5 minutes.',
-          timeline: [
-            TimelineEvent(
-              id: 't3',
-              title: 'Order Sent to Kitchen',
-              timestamp: now.subtract(const Duration(minutes: 5)),
-              actor: 'BY CAPTAIN AHMED M.',
-            ),
-          ],
-        ));
-      } else {
-        // Available Inside Tables
-        result.add(TableEntity(
-          id: 'in_$i',
-          tableNumber: formattedNumber,
-          tableCode: 'T-$formattedNumber',
+        return TableEntity(
+          id: num.toString(),
+          tableNumber: numStr,
+          tableCode: 'T-$numStr',
           status: TableStatus.available,
-          location: TableLocation.inside,
+          location: isOutside ? TableLocation.outside : TableLocation.inside,
           guestCount: 0,
           currentTotal: 0.00,
-          timeSeated: '00:00',
-          areaName: 'Inside Hall',
-          capacity: (i % 3 == 0) ? 6 : (i % 2 == 0 ? 4 : 2),
-        ));
-      }
-    }
-
-    // 2. Outside Patio Tables (20 Tables)
-    for (int i = 1; i <= 20; i++) {
-      final formattedNumber = (i + 20).toString().padLeft(2, '0');
-
-      if (i == 6 || formattedNumber == '06') {
-        // Table 06: Occupied
-        result.add(TableEntity(
-          id: '6',
-          tableNumber: '06',
-          tableCode: 'T-06',
-          status: TableStatus.occupied,
-          location: TableLocation.outside,
-          guestCount: 2,
-          currentTotal: 40.69,
-          timeSeated: '42:00',
-          openedAt: now.subtract(const Duration(minutes: 42, seconds: 0)),
-          seatedAt: now.subtract(const Duration(minutes: 42, seconds: 0)),
-          areaName: 'Outside Patio',
-          assignedCaptain: 'Captain Ahmed M.',
-          capacity: 4,
-          items: const [
-            OrderItem(id: '101', name: 'Cappuccino', price: 9.00, quantity: 2),
-            OrderItem(id: '102', name: 'Avocado Toast', price: 14.00, quantity: 1),
-            OrderItem(id: '103', name: 'Blueberry Muffin', price: 10.00, quantity: 2),
-            OrderItem(id: '104', name: 'Flat White', price: 4.50, quantity: 1),
-          ],
-          tableStatusDescription: 'Occupied for 42 minutes. Kitchen is processing muffins.',
-          timeline: [
-            TimelineEvent(
-              id: 't4',
-              title: 'Order Sent to Kitchen',
-              timestamp: now.subtract(const Duration(minutes: 20)),
-              actor: 'BY CAPTAIN AHMED M.',
-            ),
-            TimelineEvent(
-              id: 't5',
-              title: 'Drinks Prepared',
-              timestamp: now.subtract(const Duration(minutes: 24)),
-              actor: 'BY BARISTA MIKE',
-            ),
-            TimelineEvent(
-              id: 't6',
-              title: 'Table Checked-in',
-              timestamp: now.subtract(const Duration(minutes: 42)),
-              actor: 'QR SCAN',
-            ),
-          ],
-        ));
-      } else {
-        // Available Outside Tables
-        result.add(TableEntity(
-          id: 'out_$i',
-          tableNumber: formattedNumber,
-          tableCode: 'T-$formattedNumber',
-          status: TableStatus.available,
-          location: TableLocation.outside,
-          guestCount: 0,
-          currentTotal: 0.00,
-          timeSeated: '00:00',
-          areaName: 'Outside Patio',
-          capacity: (i % 4 == 0) ? 8 : (i % 2 == 0 ? 4 : 2),
-        ));
-      }
-    }
-
-    return result;
+          areaName: area,
+          capacity: capacity,
+        );
+      }),
+    ];
   }
 }

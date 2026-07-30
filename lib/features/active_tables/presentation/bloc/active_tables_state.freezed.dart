@@ -125,12 +125,12 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function( String message)?  error,TResult Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  String searchQuery)?  success,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function( String message)?  error,TResult Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  TableStatusFilter selectedFilter,  int allCount,  int availableCount,  int occupiedCount)?  success,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadingState() when loading != null:
 return loading();case ErrorState() when error != null:
 return error(_that.message);case SuccessState() when success != null:
-return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.searchQuery);case _:
+return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.selectedFilter,_that.allCount,_that.availableCount,_that.occupiedCount);case _:
   return orElse();
 
 }
@@ -148,12 +148,12 @@ return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function( String message)  error,required TResult Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  String searchQuery)  success,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function( String message)  error,required TResult Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  TableStatusFilter selectedFilter,  int allCount,  int availableCount,  int occupiedCount)  success,}) {final _that = this;
 switch (_that) {
 case LoadingState():
 return loading();case ErrorState():
 return error(_that.message);case SuccessState():
-return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.searchQuery);case _:
+return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.selectedFilter,_that.allCount,_that.availableCount,_that.occupiedCount);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -170,12 +170,12 @@ return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function( String message)?  error,TResult? Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  String searchQuery)?  success,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function( String message)?  error,TResult? Function( List<TableEntity> insideTables,  List<TableEntity> outsideTables,  int selectedTabIndex,  TableStatusFilter selectedFilter,  int allCount,  int availableCount,  int occupiedCount)?  success,}) {final _that = this;
 switch (_that) {
 case LoadingState() when loading != null:
 return loading();case ErrorState() when error != null:
 return error(_that.message);case SuccessState() when success != null:
-return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.searchQuery);case _:
+return success(_that.insideTables,_that.outsideTables,_that.selectedTabIndex,_that.selectedFilter,_that.allCount,_that.availableCount,_that.occupiedCount);case _:
   return null;
 
 }
@@ -285,7 +285,7 @@ as String,
 
 
 class SuccessState implements ActiveTablesState {
-  const SuccessState({required final  List<TableEntity> insideTables, required final  List<TableEntity> outsideTables, this.selectedTabIndex = 0, this.searchQuery = ''}): _insideTables = insideTables,_outsideTables = outsideTables;
+  const SuccessState({required final  List<TableEntity> insideTables, required final  List<TableEntity> outsideTables, this.selectedTabIndex = 0, this.selectedFilter = TableStatusFilter.all, this.allCount = 0, this.availableCount = 0, this.occupiedCount = 0}): _insideTables = insideTables,_outsideTables = outsideTables;
   
 
  final  List<TableEntity> _insideTables;
@@ -303,7 +303,10 @@ class SuccessState implements ActiveTablesState {
 }
 
 @JsonKey() final  int selectedTabIndex;
-@JsonKey() final  String searchQuery;
+@JsonKey() final  TableStatusFilter selectedFilter;
+@JsonKey() final  int allCount;
+@JsonKey() final  int availableCount;
+@JsonKey() final  int occupiedCount;
 
 /// Create a copy of ActiveTablesState
 /// with the given fields replaced by the non-null parameter values.
@@ -315,16 +318,16 @@ $SuccessStateCopyWith<SuccessState> get copyWith => _$SuccessStateCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuccessState&&const DeepCollectionEquality().equals(other._insideTables, _insideTables)&&const DeepCollectionEquality().equals(other._outsideTables, _outsideTables)&&(identical(other.selectedTabIndex, selectedTabIndex) || other.selectedTabIndex == selectedTabIndex)&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuccessState&&const DeepCollectionEquality().equals(other._insideTables, _insideTables)&&const DeepCollectionEquality().equals(other._outsideTables, _outsideTables)&&(identical(other.selectedTabIndex, selectedTabIndex) || other.selectedTabIndex == selectedTabIndex)&&(identical(other.selectedFilter, selectedFilter) || other.selectedFilter == selectedFilter)&&(identical(other.allCount, allCount) || other.allCount == allCount)&&(identical(other.availableCount, availableCount) || other.availableCount == availableCount)&&(identical(other.occupiedCount, occupiedCount) || other.occupiedCount == occupiedCount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_insideTables),const DeepCollectionEquality().hash(_outsideTables),selectedTabIndex,searchQuery);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_insideTables),const DeepCollectionEquality().hash(_outsideTables),selectedTabIndex,selectedFilter,allCount,availableCount,occupiedCount);
 
 @override
 String toString() {
-  return 'ActiveTablesState.success(insideTables: $insideTables, outsideTables: $outsideTables, selectedTabIndex: $selectedTabIndex, searchQuery: $searchQuery)';
+  return 'ActiveTablesState.success(insideTables: $insideTables, outsideTables: $outsideTables, selectedTabIndex: $selectedTabIndex, selectedFilter: $selectedFilter, allCount: $allCount, availableCount: $availableCount, occupiedCount: $occupiedCount)';
 }
 
 
@@ -335,7 +338,7 @@ abstract mixin class $SuccessStateCopyWith<$Res> implements $ActiveTablesStateCo
   factory $SuccessStateCopyWith(SuccessState value, $Res Function(SuccessState) _then) = _$SuccessStateCopyWithImpl;
 @useResult
 $Res call({
- List<TableEntity> insideTables, List<TableEntity> outsideTables, int selectedTabIndex, String searchQuery
+ List<TableEntity> insideTables, List<TableEntity> outsideTables, int selectedTabIndex, TableStatusFilter selectedFilter, int allCount, int availableCount, int occupiedCount
 });
 
 
@@ -352,13 +355,16 @@ class _$SuccessStateCopyWithImpl<$Res>
 
 /// Create a copy of ActiveTablesState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? insideTables = null,Object? outsideTables = null,Object? selectedTabIndex = null,Object? searchQuery = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? insideTables = null,Object? outsideTables = null,Object? selectedTabIndex = null,Object? selectedFilter = null,Object? allCount = null,Object? availableCount = null,Object? occupiedCount = null,}) {
   return _then(SuccessState(
 insideTables: null == insideTables ? _self._insideTables : insideTables // ignore: cast_nullable_to_non_nullable
 as List<TableEntity>,outsideTables: null == outsideTables ? _self._outsideTables : outsideTables // ignore: cast_nullable_to_non_nullable
 as List<TableEntity>,selectedTabIndex: null == selectedTabIndex ? _self.selectedTabIndex : selectedTabIndex // ignore: cast_nullable_to_non_nullable
-as int,searchQuery: null == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
-as String,
+as int,selectedFilter: null == selectedFilter ? _self.selectedFilter : selectedFilter // ignore: cast_nullable_to_non_nullable
+as TableStatusFilter,allCount: null == allCount ? _self.allCount : allCount // ignore: cast_nullable_to_non_nullable
+as int,availableCount: null == availableCount ? _self.availableCount : availableCount // ignore: cast_nullable_to_non_nullable
+as int,occupiedCount: null == occupiedCount ? _self.occupiedCount : occupiedCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

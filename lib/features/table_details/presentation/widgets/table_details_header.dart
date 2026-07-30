@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../active_tables/domain/entities/table_entity.dart';
@@ -18,42 +19,37 @@ class TableDetailsHeader extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: colorScheme.primaryContainer,
-                  child: Icon(
-                    Icons.person,
-                    color: colorScheme.onPrimaryContainer,
-                    size: 22.0,
-                  ),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20.r,
+                backgroundColor: colorScheme.secondaryContainer,
+                child: Icon(
+                  Icons.person_rounded,
+                  color: colorScheme.onSecondaryContainer,
+                  size: 22.r,
                 ),
-                const SizedBox(width: 12.0),
-                Expanded(
-                  child: Text(
-                    '${AppStrings.tablePrefix}${table.tableNumber} • ${table.areaName}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
+              ),
+              SizedBox(width: 12.w),
+              Text(
+                '${AppStrings.tablePrefix}${table.tableNumber} - ${AppStrings.occupiedStatus}',
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurface,
+                  fontSize: 18.sp,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           IconButton(
             icon: Icon(
               Icons.settings_outlined,
               color: colorScheme.onSurface,
-              size: 22.0,
+              size: 22.r,
             ),
             onPressed: () {
               const SettingsRoute().push(context);

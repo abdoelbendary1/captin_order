@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
@@ -146,6 +147,7 @@ class CheckoutView extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: double.infinity,
+                            height: 52.h,
                             child: ElevatedButton(
                               onPressed: successState.isSettling
                                   ? null
@@ -156,16 +158,15 @@ class CheckoutView extends StatelessWidget {
                                     },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: theme.primaryColor,
-                                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
                                 elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
                               ),
                               child: successState.isSettling
                                   ? SizedBox(
-                                      width: 22.0,
-                                      height: 22.0,
+                                      width: 22.r,
+                                      height: 22.r,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2.5,
                                         color: colorScheme.onPrimary,
@@ -177,23 +178,25 @@ class CheckoutView extends StatelessWidget {
                                         Icon(
                                           Icons.print_outlined,
                                           color: colorScheme.onPrimary,
-                                          size: 20.0,
+                                          size: 20.r,
                                         ),
-                                        const SizedBox(width: 8.0),
+                                        SizedBox(width: 8.w),
                                         Text(
                                           AppStrings.closeTableAndPrintReceipt,
                                           style: textTheme.titleSmall?.copyWith(
                                             color: colorScheme.onPrimary,
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 14.5.sp,
                                           ),
                                         ),
                                       ],
                                     ),
                             ),
                           ),
-                          const SizedBox(height: 10.0),
+                          SizedBox(height: 10.h),
                           SizedBox(
                             width: double.infinity,
+                            height: 48.h,
                             child: OutlinedButton(
                               onPressed: () {
                                 AppNotificationService.showInfo(
@@ -202,20 +205,21 @@ class CheckoutView extends StatelessWidget {
                                 );
                               },
                               style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16.0),
                                 side: BorderSide(
                                   color: colorScheme.outlineVariant,
                                 ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderRadius: BorderRadius.circular(10.r),
                                 ),
                               ),
                               child: Text(
                                 AppStrings.splitBill,
                                 style: textTheme.titleSmall?.copyWith(
-                                  color: colorScheme.onSurface,
+                                  fontFamily: 'JetBrains Mono',
+                                  color: theme.primaryColor,
                                   fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.2,
+                                  letterSpacing: 1.5,
+                                  fontSize: 13.sp,
                                 ),
                               ),
                             ),

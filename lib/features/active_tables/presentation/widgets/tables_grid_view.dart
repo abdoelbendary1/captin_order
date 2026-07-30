@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../domain/entities/table_entity.dart';
 import 'table_card.dart';
@@ -24,10 +25,10 @@ class TablesGridView extends StatelessWidget {
           children: [
             Icon(
               Icons.table_restaurant_outlined,
-              size: 48.0,
+              size: 48.r,
               color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
             ),
-            const SizedBox(height: 12.0),
+            SizedBox(height: 12.h),
             Text(
               AppStrings.noActiveTables,
               style: textTheme.bodyMedium?.copyWith(
@@ -41,13 +42,13 @@ class TablesGridView extends StatelessWidget {
     }
 
     return GridView.builder(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       physics: const BouncingScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12.0,
-        mainAxisSpacing: 24.0,
-        childAspectRatio: 1.15,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 5,
+        crossAxisSpacing: 8.w,
+        mainAxisSpacing: 8.h,
+        childAspectRatio: 1.0,
       ),
       itemCount: tables.length,
       itemBuilder: (context, index) {

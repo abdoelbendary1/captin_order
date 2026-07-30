@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/services/app_notification_service.dart';
@@ -98,17 +99,18 @@ class TableDetailsView extends StatelessWidget {
                   final table = successState.table;
 
                   return SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 32.0),
+                    padding: EdgeInsets.fromLTRB(16.w, 0.0, 16.w, 32.h),
+                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Header: Avatar + Table Title + Settings
                         TableDetailsHeader(table: table),
-                        const SizedBox(height: 12.0),
+                        SizedBox(height: 12.h),
 
                         // Active Order Card (Receipt layout with breakdown)
                         TableActiveOrderCard(table: table),
-                        const SizedBox(height: 16.0),
+                        SizedBox(height: 16.h),
 
                         // 3 Action Buttons (Add Item, Request Check, Move Table)
                         TableActionButtons(
@@ -139,11 +141,11 @@ class TableDetailsView extends StatelessWidget {
                                 );
                           },
                         ),
-                        const SizedBox(height: 16.0),
+                        SizedBox(height: 16.h),
 
                         // Table Status Banner
                         TableStatusBanner(table: table),
-                        const SizedBox(height: 24.0),
+                        SizedBox(height: 20.h),
 
                         // Order Timeline Section
                         OrderTimelineView(timeline: table.timeline),

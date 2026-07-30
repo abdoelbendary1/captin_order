@@ -137,10 +137,10 @@ return confirmOrder(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadMenuItems,TResult Function( String category)?  selectCategory,TResult Function( String query)?  searchItems,TResult Function( MenuItemEntity item)?  incrementItem,TResult Function( MenuItemEntity item)?  decrementItem,TResult Function( MenuItemEntity item)?  removeItem,TResult Function( String tableNumber,  String areaName)?  confirmOrder,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String? tableNumber)?  loadMenuItems,TResult Function( String category)?  selectCategory,TResult Function( String query)?  searchItems,TResult Function( MenuItemEntity item)?  incrementItem,TResult Function( MenuItemEntity item)?  decrementItem,TResult Function( MenuItemEntity item)?  removeItem,TResult Function( String tableNumber,  String areaName)?  confirmOrder,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadMenuItemsEvent() when loadMenuItems != null:
-return loadMenuItems();case SelectCategoryEvent() when selectCategory != null:
+return loadMenuItems(_that.tableNumber);case SelectCategoryEvent() when selectCategory != null:
 return selectCategory(_that.category);case SearchItemsEvent() when searchItems != null:
 return searchItems(_that.query);case IncrementItemEvent() when incrementItem != null:
 return incrementItem(_that.item);case DecrementItemEvent() when decrementItem != null:
@@ -164,10 +164,10 @@ return confirmOrder(_that.tableNumber,_that.areaName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadMenuItems,required TResult Function( String category)  selectCategory,required TResult Function( String query)  searchItems,required TResult Function( MenuItemEntity item)  incrementItem,required TResult Function( MenuItemEntity item)  decrementItem,required TResult Function( MenuItemEntity item)  removeItem,required TResult Function( String tableNumber,  String areaName)  confirmOrder,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String? tableNumber)  loadMenuItems,required TResult Function( String category)  selectCategory,required TResult Function( String query)  searchItems,required TResult Function( MenuItemEntity item)  incrementItem,required TResult Function( MenuItemEntity item)  decrementItem,required TResult Function( MenuItemEntity item)  removeItem,required TResult Function( String tableNumber,  String areaName)  confirmOrder,}) {final _that = this;
 switch (_that) {
 case LoadMenuItemsEvent():
-return loadMenuItems();case SelectCategoryEvent():
+return loadMenuItems(_that.tableNumber);case SelectCategoryEvent():
 return selectCategory(_that.category);case SearchItemsEvent():
 return searchItems(_that.query);case IncrementItemEvent():
 return incrementItem(_that.item);case DecrementItemEvent():
@@ -190,10 +190,10 @@ return confirmOrder(_that.tableNumber,_that.areaName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadMenuItems,TResult? Function( String category)?  selectCategory,TResult? Function( String query)?  searchItems,TResult? Function( MenuItemEntity item)?  incrementItem,TResult? Function( MenuItemEntity item)?  decrementItem,TResult? Function( MenuItemEntity item)?  removeItem,TResult? Function( String tableNumber,  String areaName)?  confirmOrder,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String? tableNumber)?  loadMenuItems,TResult? Function( String category)?  selectCategory,TResult? Function( String query)?  searchItems,TResult? Function( MenuItemEntity item)?  incrementItem,TResult? Function( MenuItemEntity item)?  decrementItem,TResult? Function( MenuItemEntity item)?  removeItem,TResult? Function( String tableNumber,  String areaName)?  confirmOrder,}) {final _that = this;
 switch (_that) {
 case LoadMenuItemsEvent() when loadMenuItems != null:
-return loadMenuItems();case SelectCategoryEvent() when selectCategory != null:
+return loadMenuItems(_that.tableNumber);case SelectCategoryEvent() when selectCategory != null:
 return selectCategory(_that.category);case SearchItemsEvent() when searchItems != null:
 return searchItems(_that.query);case IncrementItemEvent() when incrementItem != null:
 return incrementItem(_that.item);case DecrementItemEvent() when decrementItem != null:
@@ -211,33 +211,67 @@ return confirmOrder(_that.tableNumber,_that.areaName);case _:
 
 
 class LoadMenuItemsEvent implements OrderItemsEvent {
-  const LoadMenuItemsEvent();
+  const LoadMenuItemsEvent({this.tableNumber});
   
 
+ final  String? tableNumber;
 
-
+/// Create a copy of OrderItemsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LoadMenuItemsEventCopyWith<LoadMenuItemsEvent> get copyWith => _$LoadMenuItemsEventCopyWithImpl<LoadMenuItemsEvent>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadMenuItemsEvent);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadMenuItemsEvent&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,tableNumber);
 
 @override
 String toString() {
-  return 'OrderItemsEvent.loadMenuItems()';
+  return 'OrderItemsEvent.loadMenuItems(tableNumber: $tableNumber)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $LoadMenuItemsEventCopyWith<$Res> implements $OrderItemsEventCopyWith<$Res> {
+  factory $LoadMenuItemsEventCopyWith(LoadMenuItemsEvent value, $Res Function(LoadMenuItemsEvent) _then) = _$LoadMenuItemsEventCopyWithImpl;
+@useResult
+$Res call({
+ String? tableNumber
+});
 
 
+
+
+}
+/// @nodoc
+class _$LoadMenuItemsEventCopyWithImpl<$Res>
+    implements $LoadMenuItemsEventCopyWith<$Res> {
+  _$LoadMenuItemsEventCopyWithImpl(this._self, this._then);
+
+  final LoadMenuItemsEvent _self;
+  final $Res Function(LoadMenuItemsEvent) _then;
+
+/// Create a copy of OrderItemsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? tableNumber = freezed,}) {
+  return _then(LoadMenuItemsEvent(
+tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

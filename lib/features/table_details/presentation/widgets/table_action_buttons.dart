@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../active_tables/domain/entities/table_entity.dart';
 
@@ -22,18 +23,18 @@ class TableActionButtons extends StatelessWidget {
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          title:  Text(AppStrings.moveTableTitle),
+          title: Text(AppStrings.moveTableTitle),
           content: TextField(
             controller: controller,
             keyboardType: TextInputType.number,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
               hintText: AppStrings.enterNewTableHint,
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child:  Text(AppStrings.cancel),
+              child: Text(AppStrings.cancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -43,7 +44,7 @@ class TableActionButtons extends StatelessWidget {
                   onMoveTable(newNum);
                 }
               },
-              child:  Text(AppStrings.move),
+              child: Text(AppStrings.move),
             ),
           ],
         );
@@ -59,88 +60,93 @@ class TableActionButtons extends StatelessWidget {
 
     return Column(
       children: [
-        // 1. Add Item Button (Dark Espresso)
+        // 1. Add Item Button (Dark Espresso, Icon on Top)
         SizedBox(
           width: double.infinity,
+          height: 60.h,
           child: ElevatedButton(
             onPressed: onAddItem,
             style: ElevatedButton.styleFrom(
               backgroundColor: theme.primaryColor,
-              padding: const EdgeInsets.symmetric(vertical: 14.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
               elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r),
+              ),
             ),
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.add_circle_outline_rounded,
                   color: colorScheme.onPrimary,
-                  size: 20.0,
+                  size: 20.r,
                 ),
-                const SizedBox(width: 8.0),
+                SizedBox(height: 2.h),
                 Text(
                   AppStrings.addItem,
                   style: textTheme.titleSmall?.copyWith(
                     color: colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
+                    fontSize: 14.sp,
                   ),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 10.0),
+        SizedBox(height: 10.h),
 
-        // 2. Request Check Button (Light Container)
+        // 2. Request Check Button (Light Gray Container, Icon on Top)
         SizedBox(
           width: double.infinity,
+          height: 60.h,
           child: ElevatedButton(
             onPressed: onRequestCheck,
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorScheme.surfaceContainerHigh,
-              padding: const EdgeInsets.symmetric(vertical: 14.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+              backgroundColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
               elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r),
+                side: BorderSide(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                ),
+              ),
             ),
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.payments_outlined,
                   color: colorScheme.onSurface,
-                  size: 20.0,
+                  size: 20.r,
                 ),
-                const SizedBox(width: 8.0),
+                SizedBox(height: 2.h),
                 Text(
                   AppStrings.requestCheck,
                   style: textTheme.titleSmall?.copyWith(
                     color: colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
+                    fontSize: 14.sp,
                   ),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 10.0),
+        SizedBox(height: 10.h),
 
         // 3. Move Table Button (Outlined)
         SizedBox(
           width: double.infinity,
+          height: 48.h,
           child: OutlinedButton(
             onPressed: () => _showMoveTableDialog(context),
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14.0),
               side: BorderSide(
                 color: colorScheme.outlineVariant,
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(10.r),
               ),
             ),
             child: Row(
@@ -149,14 +155,15 @@ class TableActionButtons extends StatelessWidget {
                 Icon(
                   Icons.swap_horiz_rounded,
                   color: colorScheme.onSurface,
-                  size: 20.0,
+                  size: 20.r,
                 ),
-                const SizedBox(width: 8.0),
+                SizedBox(width: 8.w),
                 Text(
                   AppStrings.moveTable,
                   style: textTheme.titleSmall?.copyWith(
                     color: colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
+                    fontSize: 13.5.sp,
                   ),
                 ),
               ],
